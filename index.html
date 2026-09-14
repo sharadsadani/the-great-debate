@@ -25,7 +25,7 @@
    #   Leave it as-is and the app runs in DEMO MODE on one device.   #
    #                                                                 #
    ################################################################### */
-var DATABASE_URL = "PASTE_YOUR_DATABASE_URL_HERE";
+var DATABASE_URL = "https://aapna-kahoot-default-rtdb.firebaseio.com";
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
 <style>
@@ -406,10 +406,12 @@ const DEMOWARN=(function(){
     'turn off any ad-blocker or VPN for this site, and reload. On an office network, try mobile data instead.</div>';
   if(REASON.indexOf('initfail')===0)return '<div class="infobox">⚠ <b>Firebase could not start — other phones cannot join this PIN.</b><br>'+
     String(REASON.slice(9)).replace(/[<>]/g,'')+'</div>';
+  const shown=String(DBURL||'(empty)').replace(/[<>]/g,'');
   return '<div class="infobox">⚠ <b>DEMO MODE — other phones cannot join this PIN.</b><br>'+
-    'Near the top of index.html the line starting with <b>var DATABASE_URL</b> still says PASTE_YOUR_DATABASE_URL_HERE. '+
-    'Put your Realtime Database address there (find it in aapna-kahoot/index.html by searching for firebaseio), commit, and reload. '+
-    'When it is right, the pill in the corner turns green and says LIVE.</div>';})();
+    'This page is reading DATABASE_URL as:<br><b style="word-break:break-all">'+shown+'</b><br>'+
+    'That is not a usable database address. Edit the <b>var DATABASE_URL</b> line near the top of index.html, '+
+    'commit, wait for Render to redeploy, then reload with Ctrl+Shift+R. '+
+    'A correct value starts with https:// and ends in .firebaseio.com or .firebasedatabase.app</div>';})();
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const teamsOf=g=>Object.entries((g&&g.teams)||{}).map(([id,t])=>Object.assign({id},t)).sort((a,b)=>(+a.no)-(+b.no));
 const votesOf=g=>(g&&g.votes&&g.round?(g.votes['r'+g.round.n]||{}):{});
