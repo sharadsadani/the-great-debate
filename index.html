@@ -72,7 +72,7 @@ main{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
 .card{width:100%;max-width:1180px;height:100%;display:flex;flex-direction:column;min-height:0;
   background:rgba(12,18,48,.72);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.10);
   border-radius:clamp(12px,2vh,22px);padding:clamp(10px,2vh,20px);box-shadow:0 20px 60px rgba(0,0,0,.55)}
-.card.mid{max-width:520px;height:auto;max-height:100%;margin:auto;justify-content:center}
+.card.mid{max-width:520px;height:auto;max-height:100%;margin:auto;justify-content:center;overflow:hidden}
 .grow{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
 .sec{flex:0 0 auto;text-align:center;font-size:min(2.2vw,1.55vh);letter-spacing:.2em;text-transform:uppercase;
   color:var(--muted);font-weight:900;margin-bottom:clamp(6px,1.2vh,12px)}
@@ -91,6 +91,26 @@ main{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
 .btn.ghost{background:transparent;border:1.5px solid rgba(255,255,255,.28);color:var(--ink);box-shadow:none}
 .btn.sm{padding:clamp(7px,1.4vh,12px) 12px;font-size:min(2.8vw,1.8vh);border-radius:11px;box-shadow:0 4px 0 rgba(0,0,0,.3)}
 .btn:disabled{filter:grayscale(.8) brightness(.62);cursor:not-allowed}
+.pinrow{flex:0 0 auto;display:flex;gap:clamp(6px,1.4vw,14px);justify-content:center;margin:1vh 0 2vh}
+.pindot{width:min(17vw,11vh);height:min(21vw,14vh);border-radius:clamp(10px,1.8vh,16px);
+  background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.2);
+  display:grid;place-items:center;font-family:Anton;font-size:min(11vw,7.5vh);color:#FFE9A8;line-height:1}
+.pindot.on{background:linear-gradient(180deg,#FFD965,#FFAE23);border-color:transparent;color:#0A0E22}
+.pindot.cur{border-color:var(--gold);box-shadow:0 0 0 4px rgba(255,197,49,.22)}
+.keypad{flex:0 1 auto;min-height:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(6px,1.3vh,12px);
+  width:100%;max-width:min(92%,44vh);margin:0 auto}
+.key{border:0;cursor:pointer;border-radius:clamp(10px,1.8vh,16px);padding:clamp(8px,2.1vh,18px) 0;
+  font-family:Anton;font-size:min(9vw,5.4vh);line-height:1;color:#0A0E22;
+  background:linear-gradient(180deg,#FFF0C2,#FFD965);box-shadow:0 5px 0 rgba(0,0,0,.32);transition:transform .07s}
+.key:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.32)}
+.key.alt{background:linear-gradient(180deg,#8FA3C8,#5D74A6);color:#fff;font-family:Inter;font-weight:900;font-size:min(5vw,2.6vh)}
+.key.blank{background:transparent;box-shadow:none;cursor:default}
+.numchips{flex:0 1 auto;display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(5px,1.1vh,10px);width:100%}
+.nchip{border:0;cursor:pointer;border-radius:12px;padding:clamp(8px,1.8vh,16px) 0;font-family:Anton;
+  font-size:min(6vw,3.6vh);line-height:1;color:#0A0E22;background:rgba(255,255,255,.82);box-shadow:0 4px 0 rgba(0,0,0,.3)}
+.nchip.on{outline:4px solid #fff;outline-offset:-4px;transform:scale(1.04)}
+.shake{animation:shk .4s}
+@keyframes shk{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
 .home{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:clamp(8px,1.8vw,26px);flex-wrap:nowrap}
 .hbox{aspect-ratio:1;width:min(31%,58vh);height:auto;max-height:100%;border:0;cursor:pointer;border-radius:clamp(14px,2.6vh,28px);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35em;
@@ -351,7 +371,11 @@ let DB=null,MODE='demo',SRV=0,DBURL='',REASON='';
   if(!ok) REASON='nourl';
   else if(!window.firebase) REASON='nosdk';
   if(ok&&window.firebase){try{firebase.initializeApp({databaseURL:u});DB=firebase.database();MODE='live';
-    DB.ref('.info/serverTimeOffset').on('value',s=>{SRV=s.val()||0});}catch(e){console.error(e);REASON='initfail:'+(e&&e.message||e);DB=LocalDB()}}
+    DB.ref('.info/serverTimeOffset').on('value',s=>{SRV=s.val()||0});
+    DB.ref('.info/connected').on('value',s=>{const on=!!s.val(),q=document.getElementById('modepill');if(!q)return;
+      q.textContent=on?'● LIVE':'● RECONNECTING…';
+      q.style.color=on?'#6DF0B2':'#0B0F24';q.style.background=on?'rgba(0,0,0,.45)':'#FFB020';
+      q.style.borderColor=on?'rgba(255,255,255,.16)':'#FFB020';});}catch(e){console.error(e);REASON='initfail:'+(e&&e.message||e);DB=LocalDB()}}
   else DB=LocalDB();
   const p=document.getElementById('modepill');
   p.textContent=MODE==='live'?'● LIVE':'● DEMO — NOT CONNECTED';
@@ -367,7 +391,7 @@ const LS={get:(k,d)=>{try{const v=localStorage.getItem('sbrm_d_'+k);return v===n
   del:k=>{try{localStorage.removeItem('sbrm_d_'+k)}catch(e){}}};
 if(!LS.get('uid'))LS.set('uid','u'+Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4));
 const S={screen:'home',role:null,pin:null,uid:LS.get('uid'),myTeamId:null,game:null,
-  rateA:null,rateB:null,err:'',subbed:false,lastTick:-1,guard:'',sheet:false,hadGame:false,dbwarn:''};
+  rateA:null,rateB:null,pinBuf:'',teamNo:null,taken:[],busy:false,err:'',subbed:false,lastTick:-1,guard:'',sheet:false,hadGame:false,dbwarn:''};
 (function(){const s=LS.get('session');if(s&&s.pin&&s.role){S.role=s.role;S.pin=s.pin;S.myTeamId=s.teamId||null;S.screen='live';S.hadGame=true;subscribe()}})();
 function saveSession(){LS.set('session',{pin:S.pin,role:S.role,teamId:S.myTeamId})}
 function subscribe(){if(S.subbed)return;S.subbed=true;
@@ -400,6 +424,7 @@ function fitBrand(){ const h=window.innerHeight;
 window.addEventListener('resize',fitBrand);
 window.addEventListener('load',()=>{fitBrand();requestAnimationFrame(fitBrand)});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitBrand);
+const DEMOSHORT='<div class="infobox" style="padding:6px 12px">⚠ DEMO MODE — not connected to the database. See the host screen.</div>';
 const DEMOWARN=(function(){
   if(REASON==='nosdk')return '<div class="infobox">⚠ <b>Could not load the Firebase library — other phones cannot join this PIN.</b><br>'+
     'The database address is set, but this device could not download firebase from the internet. Check the connection, '+
@@ -429,7 +454,7 @@ function confetti(){const c=document.createElement('div');c.className='conf';
   document.body.appendChild(c);setTimeout(()=>c.remove(),7000)}
 /* ---------------- actions ---------------- */
 const A={};
-A.go=s=>{S.err='';S.screen=s;render(true)};
+A.go=s=>{S.err='';if(s==='home'||s==='teamjoin'||s==='audjoin'){S.pinBuf='';}if(s==='home'){S.teamNo=null}S.screen=s;render(true)};
 A.home=()=>leave();
 A.sheet=v=>{S.sheet=v;overlay(true)};
 A.hostLogin=()=>{const v=el('pw').value.trim();
@@ -448,7 +473,32 @@ A.hostResume=()=>{const p=el('rpin').value.trim();
     S.role='host';S.pin=p;S.screen='live';S.hadGame=true;saveSession();subscribe();render(true)})
     .catch(e=>{S.err=dbMsg(e);render(true)})};
 const NOTFOUND='No game found with that PIN. Check the digits, and check that the host screen shows LIVE in green (not DEMO MODE).';
-A.teamJoin=()=>{const p=el('tpin').value.trim(),no=el('tno').value.trim(),nm=el('tname').value.trim();
+A.key=d=>{if(S.busy)return; if(S.pinBuf.length>=4)return; S.pinBuf+=String(d); S.err='';
+  render(true);
+  if(S.pinBuf.length===4) setTimeout(A.pinDone,180)};
+A.del=()=>{S.pinBuf=S.pinBuf.slice(0,-1);S.err='';render(true)};
+A.pinDone=()=>{ if(S.busy||S.pinBuf.length!==4)return; S.busy=true; S.err='Checking…'; render(true);
+  const pin=S.pinBuf;
+  DB.ref(ROOT+'/'+pin).once('value').then(sn=>{ S.busy=false;
+    if(!sn.val()){ S.err='No game with PIN '+pin+'. Check the big screen.'; S.pinBuf=''; render(true); return }
+    if(S.screen==='audjoin'){ A.finishAud(pin) }
+    else { const g=sn.val()||{}; S.taken=Object.entries(g.teams||{}).filter(([id])=>id!==S.uid).map(([,t])=>String(t.no));
+      S.pin=pin; S.screen='teamjoin2'; S.err=''; render(true) }
+  }).catch(e=>{S.busy=false;S.err=dbMsg(e);S.pinBuf='';render(true)})};
+A.finishAud=pin=>{ S.busy=true;
+  DB.ref(ROOT+'/'+pin+'/audience/'+S.uid).set({name:'Guest',ts:Date.now()}).then(()=>{
+    S.busy=false;S.role='audience';S.pin=pin;S.screen='live';S.err='';S.hadGame=true;S.pinBuf='';
+    saveSession();subscribe();render(true)}).catch(e=>{S.busy=false;S.err=dbMsg(e);render(true)})};
+A.pickNo=n=>{S.teamNo=n;S.err='';render(true)};
+A.teamDone=()=>{ if(S.busy)return; const nm=(el('tname')?el('tname').value:'').trim();
+  if(S.teamNo==null)return(S.err='Tap your team number.',render(true));
+  if(!nm)return(S.err='Type your team name.',render(true));
+  if((S.taken||[]).indexOf(String(S.teamNo))>=0)return(S.err='Team number '+S.teamNo+' is already taken.',render(true));
+  S.busy=true;S.err='Joining…';render(true);
+  DB.ref(ROOT+'/'+S.pin+'/teams/'+S.uid).set({no:String(S.teamNo),name:nm,ts:Date.now()}).then(()=>{
+    S.busy=false;S.role='team';S.myTeamId=S.uid;S.screen='live';S.err='';S.hadGame=true;S.pinBuf='';
+    saveSession();subscribe();render(true)}).catch(e=>{S.busy=false;S.err=dbMsg(e);render(true)})};
+A.teamJoinOld=()=>{const p=el('tpin').value.trim(),no=el('tno').value.trim(),nm=el('tname').value.trim();
   if(!/^\d{4}$/.test(p))return(S.err='Enter the 4-digit PIN from the big screen.',render(true));
   if(!no)return(S.err='Enter your team number.',render(true));
   if(!nm)return(S.err='Enter your team name.',render(true));
@@ -456,7 +506,7 @@ A.teamJoin=()=>{const p=el('tpin').value.trim(),no=el('tno').value.trim(),nm=el(
     DB.ref(ROOT+'/'+p+'/teams/'+S.uid).set({no:no,name:nm,ts:Date.now()}).then(()=>{
       S.role='team';S.pin=p;S.myTeamId=S.uid;S.screen='live';S.err='';S.hadGame=true;saveSession();subscribe();render(true)})
       .catch(e=>{S.err=dbMsg(e);render(true)})}).catch(e=>{S.err=dbMsg(e);render(true)})};
-A.audJoin=()=>{const p=el('apin').value.trim(),nm=(el('aname').value||'').trim();
+A.audJoinOld=()=>{const p=el('apin').value.trim(),nm=(el('aname').value||'').trim();
   if(!/^\d{4}$/.test(p))return(S.err='Enter the 4-digit PIN from the big screen.',render(true));
   DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err=NOTFOUND,render(true));
     DB.ref(ROOT+'/'+p+'/audience/'+S.uid).set({name:nm||'Guest',ts:Date.now()}).then(()=>{
@@ -518,22 +568,36 @@ function scrHostPw(){return `<button class="back" onclick="A.go('home')">← Bac
   <div class="lbl">Or rejoin a game already running</div>
   <input id="rpin" inputmode="numeric" maxlength="4" placeholder="4-digit PIN">
   <button class="btn ghost sm" style="margin-top:10px" onclick="A.hostResume()">Rejoin as Host</button></div>`}
-function scrTeamJoin(){return `<button class="back" onclick="A.go('home')">← Back</button>
-  <div class="card mid"><div class="sec">Team Registration</div>
-  <div class="lbl">Game PIN</div><input id="tpin" inputmode="numeric" maxlength="4" placeholder="4-digit PIN">
-  <div class="lbl">Team Number</div><input id="tno" inputmode="numeric" maxlength="3" placeholder="e.g. 1">
-  <div class="lbl">Team Name</div><input id="tname" maxlength="28" placeholder="e.g. Vighnaharta Warriors" onkeydown="if(event.key==='Enter')A.teamJoin()">
+function pinPad(title,sub){
+  const d=i=>`<div class="pindot ${S.pinBuf.length>i?'on':''} ${S.pinBuf.length===i?'cur':''}">${S.pinBuf[i]||''}</div>`;
+  return `<div class="sec">${title}</div>
+    <div class="pinrow ${/^No game/.test(S.err)?'shake':''}">${d(0)}${d(1)}${d(2)}${d(3)}</div>
+    <div class="keypad">
+      ${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="key" onclick="A.key(${n})">${n}</button>`).join('')}
+      <button class="key alt" onclick="A.go('home')">BACK</button>
+      <button class="key" onclick="A.key(0)">0</button>
+      <button class="key alt" onclick="A.del()">⌫</button>
+    </div>
+    <div class="err">${esc(S.err)}</div>
+    ${sub?`<div class="note">${sub}</div>`:''}`}
+
+function scrTeamJoin(){return `<div class="card mid">${pinPad('Team — enter the 4-digit game PIN','The PIN is on the big screen.')}
+  ${MODE==='demo'?DEMOSHORT:''}</div>`}
+
+function scrTeamJoin2(){return `<div class="card mid">
+  <div class="sec">Tap your team number</div>
+  <div class="numchips">${[1,2,3,4,5,6,7,8,9,10,11,12].map(n=>{const t=(S.taken||[]).indexOf(String(n))>=0;
+    return `<button class="nchip ${S.teamNo===n?'on':''}" ${t?'disabled style="opacity:.3;text-decoration:line-through"':
+    (S.teamNo===n?'style="background:'+tcol(n)+'"':'')} onclick="A.pickNo(${n})">${n}</button>`}).join('')}</div>
+  <div class="note" style="margin-top:6px">Numbers already taken are crossed out.</div>
+  <div class="lbl">Team Name</div>
+  <input id="tname" maxlength="28" placeholder="e.g. Vighnaharta Warriors" autocomplete="off">
   <div class="err">${esc(S.err)}</div>
-  <button class="btn blue" onclick="A.teamJoin()">SUBMIT &amp; JOIN</button>
-  ${MODE==='demo'?DEMOWARN:''}</div>`}
-function scrAudJoin(){return `<button class="back" onclick="A.go('home')">← Back</button>
-  <div class="card mid"><div class="sec">Audience Entry</div>
-  <div class="lbl">Game PIN</div><input id="apin" inputmode="numeric" maxlength="4" placeholder="4-digit PIN">
-  <div class="lbl">Your Name <span style="opacity:.6">(optional)</span></div>
-  <input id="aname" maxlength="24" placeholder="Your name" onkeydown="if(event.key==='Enter')A.audJoin()">
-  <div class="err">${esc(S.err)}</div>
-  <button class="btn violet" onclick="A.audJoin()">ENTER AS AUDIENCE</button>
-  ${MODE==='demo'?DEMOWARN:'<div class="note">You will rate both teams from 1 to 10.</div>'}</div>`}
+  <button class="btn blue" onclick="A.teamDone()">JOIN THE GAME</button>
+  <button class="btn ghost sm" style="margin-top:10px" onclick="A.go('teamjoin')">← Change PIN</button></div>`}
+
+function scrAudJoin(){return `<div class="card mid">${pinPad('Audience — enter the 4-digit game PIN','You will rate both teams out of 10.')}
+  ${MODE==='demo'?DEMOSHORT:''}</div>`}
 
 /* ---------------- shared blocks ---------------- */
 function topicHead(g,small){const r=g.round,t=TOPIC[r.topicId]||{n:r.topicId,t:'',cat:''};
@@ -695,7 +759,7 @@ function audView(g){
 /* ---------------- render ---------------- */
 let lastKey='',winShown=false,lastN=-1;
 function viewKey(){const g=S.game;
-  if(S.screen!=='live')return S.screen+'|'+S.err;
+  if(S.screen!=='live')return [S.screen,S.err,S.pinBuf,S.teamNo,S.busy].join('|');
   if(!g)return 'none';
   const t=Object.entries(g.teams||{}).map(([k,v])=>k+v.no+v.name).join(',');
   const mv=g.round?JSON.stringify(((g.votes||{})['r'+g.round.n]||{})[S.uid]||''):'';
@@ -705,15 +769,20 @@ function viewKey(){const g=S.game;
 function render(force){
   const k=viewKey(); if(!force&&k===lastKey){overlay();return} lastKey=k;
   const app=el('app'),g=S.game;
+  const act=document.activeElement, actId=(act&&act.tagName==='INPUT')?act.id:null;
+  const keep={}; app.querySelectorAll('input').forEach(i=>{if(i.id)keep[i.id]=i.value});
   if(S.screen==='home')app.innerHTML=scrHome();
   else if(S.screen==='hostpw')app.innerHTML=scrHostPw();
   else if(S.screen==='teamjoin')app.innerHTML=scrTeamJoin();
+  else if(S.screen==='teamjoin2')app.innerHTML=scrTeamJoin2();
   else if(S.screen==='audjoin')app.innerHTML=scrAudJoin();
   else if(!g&&S.role==='host'&&!S.hadGame)app.innerHTML=hostView({phase:'lobby'});
   else if(!g)app.innerHTML=`<div class="card mid"><div class="grow"><div class="dots">Game closed</div>
     <div class="note">The host ended this game.</div></div>
     <div class="bar"><button class="btn ghost" onclick="A.home()">Back to start</button></div></div>`;
   else app.innerHTML = S.role==='host'?hostView(g) : S.role==='team'?teamView(g) : audView(g);
+  app.querySelectorAll('input').forEach(i=>{if(i.id&&keep[i.id]!==undefined&&!i.value)i.value=keep[i.id]});
+  if(actId){const n=el(actId); if(n&&n!==document.activeElement){try{n.focus();const v=n.value;n.value='';n.value=v}catch(e){}}}
   fitBrand(); overlay(); tick();
 }
 function overlay(force){
@@ -751,7 +820,10 @@ function tick(){const g=S.game;if(!g)return;
     if(left<=0&&S.role==='host'&&S.guard!=='cp'+g.round.n){S.guard='cp'+g.round.n;A.closePoll()}}
 }
 document.addEventListener('click',()=>{if(!AC&&S.role==='host'){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}},{once:true});
-window.addEventListener('resize',()=>render(true));
+let rzT=null;
+window.addEventListener('resize',()=>{ fitBrand();
+  const a=document.activeElement; if(a&&a.tagName==='INPUT')return;
+  clearTimeout(rzT); rzT=setTimeout(()=>render(true),220); });
 render(true); fitBrand(); setTimeout(fitBrand,400);
 </script>
 </body>
