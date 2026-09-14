@@ -392,7 +392,8 @@ const LS={get:(k,d)=>{try{const v=localStorage.getItem('sbrm_d_'+k);return v===n
 if(!LS.get('uid'))LS.set('uid','u'+Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4));
 const S={screen:'home',role:null,pin:null,uid:LS.get('uid'),myTeamId:null,game:null,
   rateA:null,rateB:null,pinBuf:'',teamNo:null,taken:[],busy:false,err:'',subbed:false,lastTick:-1,guard:'',sheet:false,hadGame:false,dbwarn:''};
-(function(){const s=LS.get('session');if(s&&s.pin&&s.role){S.role=s.role;S.pin=s.pin;S.myTeamId=s.teamId||null;S.screen='live';S.hadGame=true;subscribe()}})();
+function restoreSession(){const s=LS.get('session');
+  if(s&&s.pin&&s.role){S.role=s.role;S.pin=s.pin;S.myTeamId=s.teamId||null;S.screen='live';S.hadGame=true;subscribe()}}
 function saveSession(){LS.set('session',{pin:S.pin,role:S.role,teamId:S.myTeamId})}
 function subscribe(){if(S.subbed)return;S.subbed=true;
   DB.ref(ROOT+'/'+S.pin).on('value',s=>{const v=s.val();
@@ -404,7 +405,9 @@ function dbMsg(e){const m=(e&&(e.message||e.code))||String(e);
   if(/permission|denied/i.test(m))return 'Firebase refused access — open the Realtime Database → Rules tab and publish: { "rules": { ".read": true, ".write": true } }';
   return 'Cannot reach the database: '+m+' — check the databaseURL line in the config block.'}
 function leave(){try{DB.ref(ROOT+'/'+S.pin).off()}catch(e){}
-  S.subbed=false;S.game=null;S.role=null;S.pin=null;S.myTeamId=null;S.screen='home';S.err='';S.sheet=false;LS.del('session');render(true)}
+  S.subbed=false;S.game=null;S.role=null;S.pin=null;S.myTeamId=null;S.screen='home';S.err='';S.sheet=false;
+  S.hadGame=false;S.pinBuf='';S.teamNo=null;S.taken=[];S.busy=false;S.rateA=null;S.rateB=null;S.guard='';
+  LS.del('session');render(true)}
 
 let AC=null;
 function beep(f,d,v){if(S.role!=='host')return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();
@@ -493,25 +496,16 @@ A.pickNo=n=>{S.teamNo=n;S.err='';render(true)};
 A.teamDone=()=>{ if(S.busy)return; const nm=(el('tname')?el('tname').value:'').trim();
   if(S.teamNo==null)return(S.err='Tap your team number.',render(true));
   if(!nm)return(S.err='Type your team name.',render(true));
-  if((S.taken||[]).indexOf(String(S.teamNo))>=0)return(S.err='Team number '+S.teamNo+' is already taken.',render(true));
   S.busy=true;S.err='Joining…';render(true);
-  DB.ref(ROOT+'/'+S.pin+'/teams/'+S.uid).set({no:String(S.teamNo),name:nm,ts:Date.now()}).then(()=>{
-    S.busy=false;S.role='team';S.myTeamId=S.uid;S.screen='live';S.err='';S.hadGame=true;S.pinBuf='';
-    saveSession();subscribe();render(true)}).catch(e=>{S.busy=false;S.err=dbMsg(e);render(true)})};
-A.teamJoinOld=()=>{const p=el('tpin').value.trim(),no=el('tno').value.trim(),nm=el('tname').value.trim();
-  if(!/^\d{4}$/.test(p))return(S.err='Enter the 4-digit PIN from the big screen.',render(true));
-  if(!no)return(S.err='Enter your team number.',render(true));
-  if(!nm)return(S.err='Enter your team name.',render(true));
-  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err=NOTFOUND,render(true));
-    DB.ref(ROOT+'/'+p+'/teams/'+S.uid).set({no:no,name:nm,ts:Date.now()}).then(()=>{
-      S.role='team';S.pin=p;S.myTeamId=S.uid;S.screen='live';S.err='';S.hadGame=true;saveSession();subscribe();render(true)})
-      .catch(e=>{S.err=dbMsg(e);render(true)})}).catch(e=>{S.err=dbMsg(e);render(true)})};
-A.audJoinOld=()=>{const p=el('apin').value.trim(),nm=(el('aname').value||'').trim();
-  if(!/^\d{4}$/.test(p))return(S.err='Enter the 4-digit PIN from the big screen.',render(true));
-  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err=NOTFOUND,render(true));
-    DB.ref(ROOT+'/'+p+'/audience/'+S.uid).set({name:nm||'Guest',ts:Date.now()}).then(()=>{
-      S.role='audience';S.pin=p;S.screen='live';S.err='';S.hadGame=true;saveSession();subscribe();render(true)})
-      .catch(e=>{S.err=dbMsg(e);render(true)})}).catch(e=>{S.err=dbMsg(e);render(true)})};
+  DB.ref(ROOT+'/'+S.pin+'/teams').once('value').then(sn=>{
+    const cur=sn.val()||{};
+    S.taken=Object.entries(cur).filter(([id])=>id!==S.uid).map(([,t])=>String(t.no));
+    if(S.taken.indexOf(String(S.teamNo))>=0){S.busy=false;
+      S.err='Team number '+S.teamNo+' has just been taken. Pick another.';S.teamNo=null;render(true);return}
+    return DB.ref(ROOT+'/'+S.pin+'/teams/'+S.uid).set({no:String(S.teamNo),name:nm,ts:Date.now()}).then(()=>{
+      S.busy=false;S.role='team';S.myTeamId=S.uid;S.screen='live';S.err='';S.hadGame=true;S.pinBuf='';
+      saveSession();subscribe();render(true)})
+  }).catch(e=>{S.busy=false;S.err=dbMsg(e);render(true)})};
 A.kick=t=>{if(confirm('Remove this team?'))gref('teams/'+t).remove()};
 A.startShow=()=>gref().update({phase:'grid'});
 A.pickTeam=t=>{const g=S.game,a=g.pendingA||null,b=g.pendingB||null;
@@ -547,8 +541,11 @@ A.declare=()=>{if(!standings(S.game).length){alert('No completed rounds yet.');r
 A.backToGrid=()=>gref().update({phase:'grid'});
 A.resetAll=()=>{if(confirm('End this game completely and clear everything?'))gref().remove().then(leave)};
 A.rate=(side,v)=>{if(side==='a')S.rateA=v;else S.rateB=v;render(true)};
-A.submitVote=()=>{const g=S.game;if(!g||!g.round||S.rateA==null||S.rateB==null)return;
-  gref('votes/r'+g.round.n+'/'+S.uid).set({a:S.rateA,b:S.rateB}).then(()=>{S.rateA=null;S.rateB=null;render(true)})};
+A.submitVote=()=>{const g=S.game;if(!g||!g.round||S.rateA==null||S.rateB==null||S.busy)return;
+  S.busy=true;render(true);
+  gref('votes/r'+g.round.n+'/'+S.uid).set({a:S.rateA,b:S.rateB})
+    .then(()=>{S.busy=false;S.rateA=null;S.rateB=null;render(true)})
+    .catch(e=>{S.busy=false;S.err='Vote not sent — '+dbMsg(e);render(true)})};
 
 /* ---------------- entry screens ---------------- */
 function scrHome(){return `<div class="card">
@@ -644,11 +641,16 @@ function hostView(g){
       <div class="lb">teams &amp; audience enter this pin to join</div>
       ${MODE==='demo'?DEMOWARN:''}${S.dbwarn?`<div class="warnbox">⚠ ${esc(S.dbwarn)}</div>`:''}</div>
     <div style="margin:1.2vh 0">${teamCards(g,'kick')}</div>
-    <div class="bar"><button class="btn green w2" ${ts.length>1?'':'disabled'} onclick="A.startShow()">▶ START THE SHOW</button>
+    <div class="lb" style="margin-bottom:.8vh;color:${ts.length>1?'#6DF0B2':'#FFD98A'}">${
+      ts.length===0?'no teams have joined yet':
+      ts.length===1?'1 team joined — a debate needs 2, but you can start anyway':
+      ts.length+' teams joined — ready to start'}</div>
+    <div class="bar"><button class="btn green w2" onclick="A.startShow()">▶ START THE SHOW</button>
       <button class="btn ghost sm" onclick="A.resetAll()">End game</button></div></div>`;
   if(ph==='grid'){const a=g.pendingA,b=g.pendingB;
     return `<div class="card">
-    <div class="sec">${!a?'Step 1 — tap TEAM A':!b?'Step 2 — tap TEAM B':'Step 3 — tap the topic they will debate'}</div>
+    <div class="sec">${ts.length<2?'Waiting for a second team — they can still join with PIN '+esc(S.pin):
+      !a?'Step 1 — tap TEAM A':!b?'Step 2 — tap TEAM B':'Step 3 — tap the topic they will debate'}</div>
     <div style="margin-bottom:1.2vh">${teamCards(g,'pick')}</div>
     ${board(g,true)}
     <div class="bar"><button class="btn w2" onclick="A.declare()">🏆 DECLARE THE WINNER</button>
@@ -824,7 +826,7 @@ let rzT=null;
 window.addEventListener('resize',()=>{ fitBrand();
   const a=document.activeElement; if(a&&a.tagName==='INPUT')return;
   clearTimeout(rzT); rzT=setTimeout(()=>render(true),220); });
-render(true); fitBrand(); setTimeout(fitBrand,400);
+restoreSession(); render(true); fitBrand(); setTimeout(fitBrand,400);
 </script>
 </body>
 </html>
