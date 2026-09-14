@@ -82,6 +82,10 @@ input:focus{border-color:var(--gold);background:rgba(255,255,255,.10)}
 .warnbox{max-width:760px;margin:1.4vh auto 0;padding:clamp(8px,1.4vh,14px) 16px;border-radius:12px;
   background:rgba(255,59,78,.14);border:1px solid rgba(255,59,78,.5);color:#FFC2C9;font-weight:700;
   font-size:min(2.7vw,1.7vh);line-height:1.5}
+.infobox{max-width:780px;margin:1.4vh auto 0;padding:clamp(8px,1.4vh,14px) 16px;border-radius:12px;
+  background:rgba(255,176,32,.14);border:1px solid rgba(255,176,32,.55);color:#FFE0A8;font-weight:800;
+  font-size:min(2.7vw,1.7vh);line-height:1.5}
+.infobox b{color:#fff}
 .err{color:#FF9AA6;font-weight:800;text-align:center;margin-top:8px;min-height:1.4em;font-size:min(3vw,1.7vh)}
 .note{color:var(--muted);font-size:min(2.8vw,1.6vh);text-align:center;margin-top:10px;line-height:1.5}
 .back{position:absolute;left:10px;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:9;background:rgba(0,0,0,.45);
@@ -297,8 +301,9 @@ let DB=null,MODE='demo',SRV=0;
     DB.ref('.info/serverTimeOffset').on('value',s=>{SRV=s.val()||0});}catch(e){console.error(e);DB=LocalDB()}}
   else DB=LocalDB();
   const p=document.getElementById('modepill');
-  p.textContent=MODE==='live'?'LIVE':'DEMO MODE — this device only';
-  p.style.color=MODE==='live'?'#6DF0B2':'#FFB020';
+  p.textContent=MODE==='live'?'● LIVE':'● DEMO MODE — OTHER PHONES CANNOT JOIN';
+  p.style.color=MODE==='live'?'#6DF0B2':'#0B0F24';
+  if(MODE!=='live'){p.style.background='#FFB020';p.style.borderColor='#FFB020';p.style.fontSize='12px'}
 })();
 const now=()=>Date.now()+SRV;
 const gref=p=>DB.ref(ROOT+'/'+S.pin+(p?'/'+p:''));
@@ -332,6 +337,9 @@ function beep(f,d,v){if(S.role!=='host')return;try{AC=AC||new(window.AudioContex
   o.start();o.stop(AC.currentTime+(d||.09)+.02)}catch(e){}}
 
 const el=id=>document.getElementById(id);
+const DEMOWARN='<div class="infobox">⚠ <b>DEMO MODE — other phones cannot join this PIN.</b><br>'+
+  'The Firebase config block at the top of index.html still has the PASTE placeholders in it, so this browser is only talking to itself. '+
+  'Paste your Aapna Kahoot config, commit it, and reload. When it is right, the pill in the corner turns green and says LIVE.</div>';
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const teamsOf=g=>Object.entries((g&&g.teams)||{}).map(([id,t])=>Object.assign({id},t)).sort((a,b)=>(+a.no)-(+b.no));
 const votesOf=g=>(g&&g.votes&&g.round?(g.votes['r'+g.round.n]||{}):{});
@@ -363,20 +371,20 @@ A.hostLogin=()=>{const v=el('pw').value.trim();
     .catch(e=>{clearTimeout(t);S.dbwarn=dbMsg(e);render(true)})};
 A.hostResume=()=>{const p=el('rpin').value.trim();
   if(!/^\d{6}$/.test(p)){S.err='Enter the 6-digit PIN of the running game.';render(true);return}
-  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val()){S.err='No game found with that PIN.';render(true);return}
+  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val()){S.err='No game found with that PIN. Check the digits, and check that the host screen shows LIVE in green (not DEMO MODE).';render(true);return}
     S.role='host';S.pin=p;S.screen='live';S.hadGame=true;saveSession();subscribe();render(true)})
     .catch(e=>{S.err=dbMsg(e);render(true)})};
 A.teamJoin=()=>{const p=el('tpin').value.trim(),no=el('tno').value.trim(),nm=el('tname').value.trim();
   if(!/^\d{6}$/.test(p))return(S.err='Enter the 6-digit PIN from the big screen.',render(true));
   if(!no)return(S.err='Enter your team number.',render(true));
   if(!nm)return(S.err='Enter your team name.',render(true));
-  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err='No game found with that PIN.',render(true));
+  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err='No game found with that PIN. Check the digits, and check that the host screen shows LIVE in green (not DEMO MODE).',render(true));
     DB.ref(ROOT+'/'+p+'/teams/'+S.uid).set({no:no,name:nm,ts:Date.now()}).then(()=>{
       S.role='team';S.pin=p;S.myTeamId=S.uid;S.screen='live';S.err='';S.hadGame=true;saveSession();subscribe();render(true)})
       .catch(e=>{S.err=dbMsg(e);render(true)})}).catch(e=>{S.err=dbMsg(e);render(true)})};
 A.audJoin=()=>{const p=el('apin').value.trim(),nm=(el('aname').value||'').trim();
   if(!/^\d{6}$/.test(p))return(S.err='Enter the 6-digit PIN from the big screen.',render(true));
-  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err='No game found with that PIN.',render(true));
+  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err='No game found with that PIN. Check the digits, and check that the host screen shows LIVE in green (not DEMO MODE).',render(true));
     DB.ref(ROOT+'/'+p+'/audience/'+S.uid).set({name:nm||'Guest',ts:Date.now()}).then(()=>{
       S.role='audience';S.pin=p;S.screen='live';S.err='';S.hadGame=true;saveSession();subscribe();render(true)})
       .catch(e=>{S.err=dbMsg(e);render(true)})}).catch(e=>{S.err=dbMsg(e);render(true)})};
@@ -431,7 +439,8 @@ function scrTeamJoin(){return `<button class="back" onclick="A.go('home')">← B
   <div class="lbl">Team Number</div><input id="tno" inputmode="numeric" maxlength="3" placeholder="e.g. 1">
   <div class="lbl">Team Name</div><input id="tname" maxlength="28" placeholder="e.g. Vighnaharta Warriors" onkeydown="if(event.key==='Enter')A.teamJoin()">
   <div class="err">${esc(S.err)}</div>
-  <button class="btn blue" onclick="A.teamJoin()">SUBMIT &amp; JOIN</button></div>`}
+  <button class="btn blue" onclick="A.teamJoin()">SUBMIT &amp; JOIN</button>
+  ${MODE==='demo'?DEMOWARN:''}</div>`}
 function scrAudJoin(){return `<button class="back" onclick="A.go('home')">← Back</button>
   <div class="card mid"><div class="sec">Audience Entry</div>
   <div class="lbl">Game PIN</div><input id="apin" inputmode="numeric" maxlength="6" placeholder="6-digit PIN">
@@ -439,7 +448,7 @@ function scrAudJoin(){return `<button class="back" onclick="A.go('home')">← Ba
   <input id="aname" maxlength="24" placeholder="Your name" onkeydown="if(event.key==='Enter')A.audJoin()">
   <div class="err">${esc(S.err)}</div>
   <button class="btn violet" onclick="A.audJoin()">ENTER AS AUDIENCE</button>
-  <div class="note">You will rate each debate from 1 to 10.</div></div>`}
+  ${MODE==='demo'?DEMOWARN:'<div class="note">You will rate each debate from 1 to 10.</div>'}</div>`}
 
 /* ---------------- shared blocks ---------------- */
 function topicHead(g,withTeam,small){const r=g.round,t=TOPIC[r.topicId]||{n:r.topicId,t:'',cat:''};
@@ -466,7 +475,7 @@ function hostView(g){
       <div class="klabel">Game PIN</div>
       <div class="pincode">${esc(S.pin)}</div>
       <div class="lb">teams &amp; audience enter this pin to join</div>
-      ${S.dbwarn?`<div class="warnbox">⚠ ${esc(S.dbwarn)}</div>`:''}
+      ${MODE==='demo'?DEMOWARN:''}${S.dbwarn?`<div class="warnbox">⚠ ${esc(S.dbwarn)}</div>`:''}
     </div>
     <div class="chips ${ts.length>12?'s2':ts.length>6?'s1':''}" style="margin:1.2vh 0">${ts.length?ts.map(t=>`<span class="chip"><b class="no">${esc(t.no)}</b>${esc(t.name)}
       <i class="x" onclick="A.kick('${t.id}')">×</i></span>`).join(''):'<div class="dots">Waiting for teams<span>.</span><span>.</span><span>.</span></div>'}</div>
