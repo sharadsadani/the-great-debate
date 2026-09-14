@@ -25,7 +25,7 @@
    #   Leave it as-is and the app runs in DEMO MODE on one device.   #
    #                                                                 #
    ################################################################### */
-var DATABASE_URL = "https://aapna-kahoot-default-rtdb.firebaseio.com";
+var DATABASE_URL = "PASTE_YOUR_DATABASE_URL_HERE";
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
 <style>
@@ -63,12 +63,11 @@ body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--de
 /* ---------- fixed shell ---------- */
 .wrap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
   padding:calc(env(safe-area-inset-top,0px) + clamp(4px,1.4vh,12px)) clamp(8px,1.6vw,20px) clamp(6px,1.4vh,14px)}
-.brand{text-align:center;flex:0 0 auto;line-height:1}
-.brand h1{font-family:Anton,sans-serif;white-space:nowrap;letter-spacing:.4px;
-  font-size:min(4.2vw,3.4vh);
-  background:linear-gradient(180deg,#FFF3C4,#FFC531 45%,#FF8A00);-webkit-background-clip:text;background-clip:text;color:transparent}
-.brand .sub{margin-top:.5vh;font-size:min(2.1vw,1.5vh);font-weight:800;letter-spacing:.26em;color:#FFD98A;white-space:nowrap}
-.brand .sub b{color:#fff;font-weight:900}
+.brand{text-align:center;flex:0 0 auto;line-height:1;padding-top:clamp(2px,1vh,10px)}
+.brand h1{font-family:Anton,sans-serif;white-space:nowrap;letter-spacing:.5px;font-size:40px;
+  background:linear-gradient(180deg,#FFF3C4,#FFC531 45%,#FF8A00);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 20px rgba(255,154,31,.3))}
+.brand .sub{margin-top:.2vh;font-size:16px;font-weight:900;letter-spacing:.2em;color:#FFD98A;white-space:nowrap}
 main{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:clamp(6px,1.4vh,14px) 0 0}
 .card{width:100%;max-width:1180px;height:100%;display:flex;flex-direction:column;min-height:0;
   background:rgba(12,18,48,.72);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.10);
@@ -92,6 +91,35 @@ main{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
 .btn.ghost{background:transparent;border:1.5px solid rgba(255,255,255,.28);color:var(--ink);box-shadow:none}
 .btn.sm{padding:clamp(7px,1.4vh,12px) 12px;font-size:min(2.8vw,1.8vh);border-radius:11px;box-shadow:0 4px 0 rgba(0,0,0,.3)}
 .btn:disabled{filter:grayscale(.8) brightness(.62);cursor:not-allowed}
+.home{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;gap:clamp(8px,1.8vw,26px);flex-wrap:nowrap}
+.hbox{aspect-ratio:1;width:min(31%,58vh);height:auto;max-height:100%;border:0;cursor:pointer;border-radius:clamp(14px,2.6vh,28px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35em;
+  color:#0A0E22;box-shadow:0 8px 0 rgba(0,0,0,.35);transition:transform .09s;padding:6px}
+.hbox:active{transform:translateY(4px);box-shadow:0 4px 0 rgba(0,0,0,.35)}
+.hbox .ic{font-size:min(9vh,4.4vw);line-height:1}
+.hbox .t1{font-family:Anton,sans-serif;font-size:min(4.6vh,2.3vw);line-height:1.05;text-align:center;letter-spacing:.02em}
+.hbox .t2{font-family:Inter;font-weight:900;font-size:min(1.7vh,.95vw);letter-spacing:.16em;opacity:.7;text-transform:uppercase}
+.hb1{background:linear-gradient(180deg,#FFD965,#FFAE23)}
+.hb2{background:linear-gradient(180deg,#7FC2FF,#3E8BFF)}
+.hb3{background:linear-gradient(180deg,#C4AEFF,#8B5CF6)}
+/* team colour cards */
+.tcards{flex:0 1 auto;display:flex;flex-wrap:wrap;gap:clamp(6px,1.2vh,12px);justify-content:center;align-content:flex-start;overflow:hidden;max-height:34vh}
+.tcard{position:relative;border-radius:clamp(10px,1.8vh,16px);padding:clamp(7px,1.3vh,13px) clamp(12px,1.4vw,20px);
+  display:flex;align-items:center;gap:10px;color:#0B0F24;font-weight:900;box-shadow:0 4px 0 rgba(0,0,0,.3);
+  font-size:min(3vw,2vh);animation:pop .25s ease;cursor:default}
+.tcard .tn{font-family:Anton;background:rgba(0,0,0,.22);color:#fff;border-radius:9px;padding:1px 10px;font-size:1.25em;line-height:1.25}
+.tcard .x{background:rgba(0,0,0,.3);color:#fff;border-radius:50%;width:1.7em;height:1.7em;display:grid;place-items:center;
+  cursor:pointer;font-weight:900;line-height:1;font-size:.85em}
+.tcard.pick{cursor:pointer}
+.tcard .tag{position:absolute;top:-.75em;left:50%;transform:translateX(-50%);background:#0B0F24;color:#fff;
+  font-family:Anton;font-size:.85em;letter-spacing:.1em;border-radius:999px;padding:1px 12px;white-space:nowrap}
+.tcard.dim{opacity:.42;filter:grayscale(.5)}
+/* VS banner */
+.vs{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:clamp(8px,1.4vw,20px);flex-wrap:nowrap;width:100%}
+.vsT{flex:1 1 0;min-width:0;border-radius:clamp(10px,1.8vh,16px);padding:clamp(7px,1.4vh,14px) clamp(8px,1.2vw,18px);
+  color:#0B0F24;font-weight:900;text-align:center;font-size:min(3.4vw,2.5vh);line-height:1.15;box-shadow:0 4px 0 rgba(0,0,0,.3)}
+.vsT b{display:block;font-family:Anton;font-size:1.35em;font-weight:400;letter-spacing:.01em}
+.vsX{flex:0 0 auto;font-family:Anton;font-size:min(6vw,4.4vh);color:#FFC531;text-shadow:0 0 22px rgba(255,197,49,.6)}
 .bar{flex:0 0 auto;display:flex;gap:clamp(6px,1.2vw,12px);margin-top:clamp(8px,1.4vh,14px)}
 .bar>*{flex:1;margin-top:0!important}
 .bar .w2{flex:2}
@@ -154,7 +182,10 @@ input:focus{border-color:var(--gold);background:rgba(255,255,255,.10)}
 .c4{background:linear-gradient(180deg,#C4AEFF,#8B5CF6)}
 
 /* ---------- topic / debate ---------- */
-.rd{flex:0 0 auto;font-size:min(2.4vw,1.6vh);letter-spacing:.22em;color:#FFD98A;font-weight:900;text-transform:uppercase;text-align:center}
+.topline{flex:0 0 auto;font-family:Anton,sans-serif;text-align:center;line-height:1.05;
+  font-size:min(7vw,6.4vh);letter-spacing:.01em;
+  background:linear-gradient(180deg,#FFFDF2,#FFC531 45%,#FF6A00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gap{flex:0 0 auto;height:clamp(10px,3.4vh,42px)}
 .tno{font-family:Anton;font-size:min(9vw,8vh);line-height:1;text-align:center;
   background:linear-gradient(180deg,#FFFDF2,#FFC531 45%,#FF6A00);-webkit-background-clip:text;background-clip:text;color:transparent}
 .ttxt{font-family:Anton,sans-serif;font-size:min(6.4vw,6.2vh);line-height:1.1;text-align:center;max-width:1000px;
@@ -176,10 +207,12 @@ input:focus{border-color:var(--gold);background:rgba(255,255,255,.10)}
 .polltimer.warn{color:#FF4A5C;animation:blink .5s steps(1) infinite}
 .bignum{font-family:Anton;font-size:min(16vw,15vh);line-height:1;color:#6DF0B2}
 .lb{font-size:min(2.4vw,1.5vh);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);font-weight:900;text-align:center}
-.scalewrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
-.scale{width:100%;aspect-ratio:5/2.25;max-height:100%;display:grid;grid-template-columns:repeat(5,1fr);
-  grid-template-rows:repeat(2,1fr);gap:clamp(5px,1.2vh,12px)}
-.sc{border:0;cursor:pointer;border-radius:clamp(10px,1.8vh,18px);font-family:Anton;font-size:min(9vw,8vh);
+.scalewrap{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(4px,1vh,12px)}
+.slabel{flex:0 0 auto;border-radius:10px;padding:clamp(4px,.8vh,8px) 12px;color:#0B0F24;font-weight:900;
+  text-align:center;font-size:min(3vw,1.9vh);letter-spacing:.06em}
+.scale{flex:1;min-height:0;display:grid;grid-template-columns:repeat(10,1fr);grid-template-rows:1fr;
+  gap:clamp(4px,1vh,10px)}
+.sc{border:0;cursor:pointer;border-radius:clamp(8px,1.5vh,16px);font-family:Anton;font-size:min(5vw,6vh);
   color:#0B0F24;box-shadow:0 5px 0 rgba(0,0,0,.3);transition:transform .08s}
 .sc:active{transform:translateY(3px)}
 .sc.on{outline:4px solid #fff;outline-offset:-4px;transform:scale(1.04);box-shadow:0 9px 0 rgba(0,0,0,.4)}
@@ -220,8 +253,16 @@ table.std td small{display:block;font-weight:600;font-size:.62em;color:#9AA6D0;f
   .polltimer{font-size:min(44vw,26vh)}
   .ttxt{font-size:min(8vw,6.2vh)}
   .tno{font-size:min(13vw,8vh)}
-  .scale{aspect-ratio:5/3}
-  .sc{font-size:min(11vw,8vh)}
+  .scale{grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(2,1fr)}
+  .sc{font-size:min(9vw,5vh)}
+  .home{flex-direction:column;gap:clamp(8px,1.8vh,18px)}
+  .hbox{width:min(22vh,72vw);height:min(22vh,72vw);overflow:hidden}
+  .hbox .ic{font-size:min(8vh,16vw)}
+  .hbox .t1{font-size:min(4vh,7.4vw)}
+  .hbox .t2{font-size:min(1.5vh,2.8vw)}
+  .topline{font-size:min(9vw,5.6vh)}
+  .vsT{font-size:min(4.4vw,2.4vh)}
+  .vsX{font-size:min(8vw,4vh)}
   .brand .sub{font-size:min(2.7vw,1.4vh);letter-spacing:.18em}
 }
 </style>
@@ -240,9 +281,9 @@ table.std td small{display:block;font-weight:600;font-size:.62em;color:#9AA6D0;f
   <div class="floor"></div>
 </div>
 <div class="wrap">
-  <header class="brand">
-    <h1>Shree Balaji Rajasthani Mandal</h1>
-    <div class="sub">Ganesh Utsav &middot; 2026 &nbsp;&#8226;&nbsp; <b>THE GREAT DEBATE</b></div>
+  <header class="brand" id="brand">
+    <h1 id="bl1">Shree Balaji Rajasthani Mandal</h1>
+    <div class="sub" id="bl2">Ganesh Utsav &middot; 2026 &nbsp;&#8226;&nbsp; THE GREAT DEBATE</div>
   </header>
   <main id="app"></main>
 </div>
@@ -313,7 +354,7 @@ let DB=null,MODE='demo',SRV=0,DBURL='',REASON='';
     DB.ref('.info/serverTimeOffset').on('value',s=>{SRV=s.val()||0});}catch(e){console.error(e);REASON='initfail:'+(e&&e.message||e);DB=LocalDB()}}
   else DB=LocalDB();
   const p=document.getElementById('modepill');
-  p.textContent=MODE==='live'?'● LIVE':'● DEMO MODE — OTHER PHONES CANNOT JOIN';
+  p.textContent=MODE==='live'?'● LIVE':'● DEMO — NOT CONNECTED';
   p.style.color=MODE==='live'?'#6DF0B2':'#0B0F24';
   if(MODE!=='live'){p.style.background='#FFB020';p.style.borderColor='#FFB020';p.style.fontSize='12px'}
 })();
@@ -326,7 +367,7 @@ const LS={get:(k,d)=>{try{const v=localStorage.getItem('sbrm_d_'+k);return v===n
   del:k=>{try{localStorage.removeItem('sbrm_d_'+k)}catch(e){}}};
 if(!LS.get('uid'))LS.set('uid','u'+Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4));
 const S={screen:'home',role:null,pin:null,uid:LS.get('uid'),myTeamId:null,game:null,
-  pickedRating:null,err:'',subbed:false,lastTick:-1,guard:'',sheet:false,hadGame:false,dbwarn:''};
+  rateA:null,rateB:null,err:'',subbed:false,lastTick:-1,guard:'',sheet:false,hadGame:false,dbwarn:''};
 (function(){const s=LS.get('session');if(s&&s.pin&&s.role){S.role=s.role;S.pin=s.pin;S.myTeamId=s.teamId||null;S.screen='live';S.hadGame=true;subscribe()}})();
 function saveSession(){LS.set('session',{pin:S.pin,role:S.role,teamId:S.myTeamId})}
 function subscribe(){if(S.subbed)return;S.subbed=true;
@@ -349,12 +390,22 @@ function beep(f,d,v){if(S.role!=='host')return;try{AC=AC||new(window.AudioContex
   o.start();o.stop(AC.currentTime+(d||.09)+.02)}catch(e){}}
 
 const el=id=>document.getElementById(id);
+const TEAMCOLS=['#FFB020','#3EC9FF','#FF5C8A','#6DE59B','#C4AEFF','#FF9A5B','#5BE3D8','#FFD24A','#F58BE0','#9BE36D'];
+const tcol=no=>TEAMCOLS[(Math.abs(parseInt(no,10)||1)-1)%TEAMCOLS.length];
+function fitText(node,maxPx){ if(!node)return; const par=node.parentElement; if(!par)return;
+  node.style.fontSize='100px'; const w=node.scrollWidth||1; const avail=Math.max(120,par.clientWidth-24);
+  let size=100*avail/w; if(maxPx)size=Math.min(size,maxPx); node.style.fontSize=Math.max(10,size)+'px'; }
+function fitBrand(){ const h=window.innerHeight;
+  fitText(el('bl1'), h*0.095); fitText(el('bl2'), h*0.034); }
+window.addEventListener('resize',fitBrand);
+window.addEventListener('load',()=>{fitBrand();requestAnimationFrame(fitBrand)});
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitBrand);
 const DEMOWARN=(function(){
   if(REASON==='nosdk')return '<div class="infobox">⚠ <b>Could not load the Firebase library — other phones cannot join this PIN.</b><br>'+
     'The database address is set, but this device could not download firebase from the internet. Check the connection, '+
     'turn off any ad-blocker or VPN for this site, and reload. On an office network, try mobile data instead.</div>';
   if(REASON.indexOf('initfail')===0)return '<div class="infobox">⚠ <b>Firebase could not start — other phones cannot join this PIN.</b><br>'+
-    esc(REASON.slice(9))+'</div>';
+    String(REASON.slice(9)).replace(/[<>]/g,'')+'</div>';
   return '<div class="infobox">⚠ <b>DEMO MODE — other phones cannot join this PIN.</b><br>'+
     'Near the top of index.html the line starting with <b>var DATABASE_URL</b> still says PASTE_YOUR_DATABASE_URL_HERE. '+
     'Put your Realtime Database address there (find it in aapna-kahoot/index.html by searching for firebaseio), commit, and reload. '+
@@ -364,15 +415,16 @@ const teamsOf=g=>Object.entries((g&&g.teams)||{}).map(([id,t])=>Object.assign({i
 const votesOf=g=>(g&&g.votes&&g.round?(g.votes['r'+g.round.n]||{}):{});
 const usedOf=g=>(g&&g.used)||{};
 function standings(g){const res=Object.values((g&&g.results)||{}),by={};
-  res.forEach(r=>{if(!by[r.teamId])by[r.teamId]={teamId:r.teamId,teamName:r.teamName,no:r.teamNo,sum:0,n:0,voters:0};
-    by[r.teamId].sum+=Number(r.avg)||0;by[r.teamId].n++;by[r.teamId].voters+=Number(r.count)||0});
+  const add=(x,count)=>{if(!x||!x.id)return;
+    if(!by[x.id])by[x.id]={teamId:x.id,teamName:x.name,no:x.no,sum:0,n:0,voters:0};
+    by[x.id].sum+=Number(x.avg)||0;by[x.id].n++;by[x.id].voters+=Number(count)||0};
+  res.forEach(r=>{add(r.A,r.count);add(r.B,r.count)});
   return Object.values(by).map(t=>Object.assign(t,{avg:t.n?t.sum/t.n:0})).sort((a,b)=>b.avg-a.avg||b.voters-a.voters)}
 function confetti(){const c=document.createElement('div');c.className='conf';
   const k=['#FFC531','#FF6A00','#3EC9FF','#8B5CF6','#27D17C','#FF5C8A'];
   for(let i=0;i<90;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.background=k[i%k.length];
     s.style.animationDuration=(2.6+Math.random()*2.4)+'s';s.style.animationDelay=(Math.random()*1.2)+'s';c.appendChild(s)}
   document.body.appendChild(c);setTimeout(()=>c.remove(),7000)}
-
 /* ---------------- actions ---------------- */
 const A={};
 A.go=s=>{S.err='';S.screen=s;render(true)};
@@ -380,69 +432,81 @@ A.home=()=>leave();
 A.sheet=v=>{S.sheet=v;overlay(true)};
 A.hostLogin=()=>{const v=el('pw').value.trim();
   if(v!==HOST_PASSWORD){S.err='Wrong password. Try again.';render(true);el('pw').focus();return}
-  const pin=String(Math.floor(100000+Math.random()*900000));
+  const pin=String(Math.floor(1000+Math.random()*9000));
   S.role='host';S.pin=pin;S.screen='live';S.err='';S.hadGame=false;S.dbwarn='';
   S.game={createdAt:Date.now(),phase:'lobby'};
   saveSession();render(true);
-  const t=setTimeout(()=>{if(!S.hadGame){S.dbwarn='No answer from Firebase after 8 seconds — check the databaseURL in the config block and the Realtime Database rules.';render(true)}},8000);
+  const t=setTimeout(()=>{if(!S.hadGame){S.dbwarn='No answer from the database after 8 seconds — check the DATABASE_URL line and the Realtime Database rules.';render(true)}},8000);
   DB.ref(ROOT+'/'+pin).set({createdAt:Date.now(),phase:'lobby'})
     .then(()=>{clearTimeout(t);S.dbwarn='';subscribe();render(true)})
     .catch(e=>{clearTimeout(t);S.dbwarn=dbMsg(e);render(true)})};
 A.hostResume=()=>{const p=el('rpin').value.trim();
-  if(!/^\d{6}$/.test(p)){S.err='Enter the 6-digit PIN of the running game.';render(true);return}
-  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val()){S.err='No game found with that PIN. Check the digits, and check that the host screen shows LIVE in green (not DEMO MODE).';render(true);return}
+  if(!/^\d{4}$/.test(p)){S.err='Enter the 4-digit PIN of the running game.';render(true);return}
+  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val()){S.err='No game found with that PIN.';render(true);return}
     S.role='host';S.pin=p;S.screen='live';S.hadGame=true;saveSession();subscribe();render(true)})
     .catch(e=>{S.err=dbMsg(e);render(true)})};
+const NOTFOUND='No game found with that PIN. Check the digits, and check that the host screen shows LIVE in green (not DEMO MODE).';
 A.teamJoin=()=>{const p=el('tpin').value.trim(),no=el('tno').value.trim(),nm=el('tname').value.trim();
-  if(!/^\d{6}$/.test(p))return(S.err='Enter the 6-digit PIN from the big screen.',render(true));
+  if(!/^\d{4}$/.test(p))return(S.err='Enter the 4-digit PIN from the big screen.',render(true));
   if(!no)return(S.err='Enter your team number.',render(true));
   if(!nm)return(S.err='Enter your team name.',render(true));
-  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err='No game found with that PIN. Check the digits, and check that the host screen shows LIVE in green (not DEMO MODE).',render(true));
+  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err=NOTFOUND,render(true));
     DB.ref(ROOT+'/'+p+'/teams/'+S.uid).set({no:no,name:nm,ts:Date.now()}).then(()=>{
       S.role='team';S.pin=p;S.myTeamId=S.uid;S.screen='live';S.err='';S.hadGame=true;saveSession();subscribe();render(true)})
       .catch(e=>{S.err=dbMsg(e);render(true)})}).catch(e=>{S.err=dbMsg(e);render(true)})};
 A.audJoin=()=>{const p=el('apin').value.trim(),nm=(el('aname').value||'').trim();
-  if(!/^\d{6}$/.test(p))return(S.err='Enter the 6-digit PIN from the big screen.',render(true));
-  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err='No game found with that PIN. Check the digits, and check that the host screen shows LIVE in green (not DEMO MODE).',render(true));
+  if(!/^\d{4}$/.test(p))return(S.err='Enter the 4-digit PIN from the big screen.',render(true));
+  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err=NOTFOUND,render(true));
     DB.ref(ROOT+'/'+p+'/audience/'+S.uid).set({name:nm||'Guest',ts:Date.now()}).then(()=>{
       S.role='audience';S.pin=p;S.screen='live';S.err='';S.hadGame=true;saveSession();subscribe();render(true)})
       .catch(e=>{S.err=dbMsg(e);render(true)})}).catch(e=>{S.err=dbMsg(e);render(true)})};
 A.kick=t=>{if(confirm('Remove this team?'))gref('teams/'+t).remove()};
 A.startShow=()=>gref().update({phase:'grid'});
-A.pickTeam=t=>gref().update({pendingTeam:t});
+A.pickTeam=t=>{const g=S.game,a=g.pendingA||null,b=g.pendingB||null;
+  if(a===t)return gref().update({pendingA:b||null,pendingB:null});
+  if(b===t)return gref().update({pendingB:null});
+  if(!a)return gref().update({pendingA:t});
+  if(!b)return gref().update({pendingB:t});
+  gref().update({pendingA:t,pendingB:null})};
 A.pickTopic=n=>{const g=S.game;if(!g||usedOf(g)[n])return;
-  if(!g.pendingTeam){alert('First tap the team that is going to debate.');return}
-  const t=teamsOf(g).find(x=>x.id===g.pendingTeam);if(!t){alert('That team has left. Pick another.');return}
+  const ts=teamsOf(g),A1=ts.find(x=>x.id===g.pendingA),B1=ts.find(x=>x.id===g.pendingB);
+  if(!A1||!B1){alert('Pick BOTH teams first — tap one team, then the other.');return}
   const rn=(g.roundCount||0)+1;
   gref().update({phase:'topic',roundCount:rn,
-    round:{n:rn,topicId:n,teamId:t.id,teamNo:t.no,teamName:t.name,duration:(g.lastDuration||180)}})};
+    round:{n:rn,topicId:n,duration:(g.lastDuration||180),
+      A:{id:A1.id,no:A1.no,name:A1.name},B:{id:B1.id,no:B1.no,name:B1.name}}})};
 A.setDuration=s=>gref().update({'round/duration':s,lastDuration:s});
 A.startDebate=()=>{const d=(S.game.round&&S.game.round.duration)||180;
   gref().update({phase:'debate','round/startAt':now(),'round/endAt':now()+d*1000})};
 A.stopDebate=()=>gref().update({phase:'debateEnd'});
 A.startPoll=()=>gref().update({phase:'poll','round/pollStartAt':now(),'round/pollEndAt':now()+30000});
 A.closePoll=()=>{const g=S.game;if(!g||!g.round)return;
-  const v=votesOf(g),a=Object.values(v).map(Number).filter(x=>!isNaN(x));
-  const c=a.length,avg=c?a.reduce((x,y)=>x+y,0)/c:0,r=g.round,p={phase:'roundResult'};
-  p['results/r'+r.n]={n:r.n,topicId:r.topicId,teamId:r.teamId,teamNo:r.teamNo,teamName:r.teamName,avg:avg,count:c};
+  const v=votesOf(g),vals=Object.values(v);
+  const pick=k=>{const a=vals.map(x=>Number(x&&x[k])).filter(x=>!isNaN(x)&&x>0);return a.length?a.reduce((x,y)=>x+y,0)/a.length:0};
+  const r=g.round,p={phase:'roundResult'};
+  p['results/r'+r.n]={n:r.n,topicId:r.topicId,count:vals.length,
+    A:{id:r.A.id,no:r.A.no,name:r.A.name,avg:pick('a')},
+    B:{id:r.B.id,no:r.B.no,name:r.B.name,avg:pick('b')}};
   gref().update(p)};
 A.endRound=()=>{const g=S.game;if(!g||!g.round)return;
-  const p={phase:'grid',round:null,pendingTeam:null};p['used/'+g.round.topicId]=true;gref().update(p)};
+  const p={phase:'grid',round:null,pendingA:null,pendingB:null};p['used/'+g.round.topicId]=true;gref().update(p)};
 A.declare=()=>{if(!standings(S.game).length){alert('No completed rounds yet.');return}
   gref().update({phase:'countdown',countAt:now()})};
 A.backToGrid=()=>gref().update({phase:'grid'});
 A.resetAll=()=>{if(confirm('End this game completely and clear everything?'))gref().remove().then(leave)};
-A.rate=v=>{S.pickedRating=v;render(true)};
-A.submitVote=()=>{const g=S.game;if(!g||!g.round||S.pickedRating==null)return;
-  gref('votes/r'+g.round.n+'/'+S.uid).set(S.pickedRating).then(()=>{S.pickedRating=null;render(true)})};
+A.rate=(side,v)=>{if(side==='a')S.rateA=v;else S.rateB=v;render(true)};
+A.submitVote=()=>{const g=S.game;if(!g||!g.round||S.rateA==null||S.rateB==null)return;
+  gref('votes/r'+g.round.n+'/'+S.uid).set({a:S.rateA,b:S.rateB}).then(()=>{S.rateA=null;S.rateB=null;render(true)})};
 
 /* ---------------- entry screens ---------------- */
-function scrHome(){return `<div class="card mid">
+function scrHome(){return `<div class="card">
   <div class="sec">Choose how you are joining</div>
-  <button class="btn" onclick="A.go('hostpw')">🎙️ &nbsp;JOIN AS A HOST</button>
-  <button class="btn blue" onclick="A.go('teamjoin')">🛡️ &nbsp;JOIN AS A TEAM</button>
-  <button class="btn violet" onclick="A.go('audjoin')">🙌 &nbsp;JOIN AS AN AUDIENCE</button>
-  <div class="note">Teams &amp; audience: take the 6-digit PIN from the big screen.</div></div>`}
+  <div class="home">
+    <button class="hbox hb1" onclick="A.go('hostpw')"><span class="ic">🎙️</span><span class="t1">JOIN AS<br>A HOST</span><span class="t2">Runs the show</span></button>
+    <button class="hbox hb2" onclick="A.go('teamjoin')"><span class="ic">🛡️</span><span class="t1">JOIN AS<br>A TEAM</span><span class="t2">You will debate</span></button>
+    <button class="hbox hb3" onclick="A.go('audjoin')"><span class="ic">🙌</span><span class="t1">JOIN AS AN<br>AUDIENCE</span><span class="t2">You will vote</span></button>
+  </div>
+  <div class="note">Teams &amp; audience: take the 4-digit PIN from the big screen.</div></div>`}
 function scrHostPw(){return `<button class="back" onclick="A.go('home')">← Back</button>
   <div class="card mid"><div class="sec">Host Access</div>
   <div class="lbl">Password</div>
@@ -450,11 +514,11 @@ function scrHostPw(){return `<button class="back" onclick="A.go('home')">← Bac
   <div class="err">${esc(S.err)}</div>
   <button class="btn" onclick="A.hostLogin()">START A NEW GAME</button>
   <div class="lbl">Or rejoin a game already running</div>
-  <input id="rpin" inputmode="numeric" maxlength="6" placeholder="6-digit PIN">
+  <input id="rpin" inputmode="numeric" maxlength="4" placeholder="4-digit PIN">
   <button class="btn ghost sm" style="margin-top:10px" onclick="A.hostResume()">Rejoin as Host</button></div>`}
 function scrTeamJoin(){return `<button class="back" onclick="A.go('home')">← Back</button>
   <div class="card mid"><div class="sec">Team Registration</div>
-  <div class="lbl">Game PIN</div><input id="tpin" inputmode="numeric" maxlength="6" placeholder="6-digit PIN">
+  <div class="lbl">Game PIN</div><input id="tpin" inputmode="numeric" maxlength="4" placeholder="4-digit PIN">
   <div class="lbl">Team Number</div><input id="tno" inputmode="numeric" maxlength="3" placeholder="e.g. 1">
   <div class="lbl">Team Name</div><input id="tname" maxlength="28" placeholder="e.g. Vighnaharta Warriors" onkeydown="if(event.key==='Enter')A.teamJoin()">
   <div class="err">${esc(S.err)}</div>
@@ -462,82 +526,97 @@ function scrTeamJoin(){return `<button class="back" onclick="A.go('home')">← B
   ${MODE==='demo'?DEMOWARN:''}</div>`}
 function scrAudJoin(){return `<button class="back" onclick="A.go('home')">← Back</button>
   <div class="card mid"><div class="sec">Audience Entry</div>
-  <div class="lbl">Game PIN</div><input id="apin" inputmode="numeric" maxlength="6" placeholder="6-digit PIN">
+  <div class="lbl">Game PIN</div><input id="apin" inputmode="numeric" maxlength="4" placeholder="4-digit PIN">
   <div class="lbl">Your Name <span style="opacity:.6">(optional)</span></div>
   <input id="aname" maxlength="24" placeholder="Your name" onkeydown="if(event.key==='Enter')A.audJoin()">
   <div class="err">${esc(S.err)}</div>
   <button class="btn violet" onclick="A.audJoin()">ENTER AS AUDIENCE</button>
-  ${MODE==='demo'?DEMOWARN:'<div class="note">You will rate each debate from 1 to 10.</div>'}</div>`}
+  ${MODE==='demo'?DEMOWARN:'<div class="note">You will rate both teams from 1 to 10.</div>'}</div>`}
 
 /* ---------------- shared blocks ---------------- */
-function topicHead(g,withTeam,small){const r=g.round,t=TOPIC[r.topicId]||{n:r.topicId,t:'',cat:''};
-  return `<div class="rd">Round ${r.n} &nbsp;•&nbsp; ${esc(t.cat)}</div>
-    ${small?'':`<div class="tno">TOPIC ${t.n}</div>`}
-    <div class="ttxt"${small?' style="font-size:min(5.6vw,4.6vh)"':''}>${small?'<b style="color:#FFD98A">'+t.n+'.</b> ':''}${esc(t.t)}</div>
-    ${withTeam?`<div class="teamchip">🛡️ Team ${esc(r.teamNo)} — ${esc(r.teamName)}</div>`:''}`}
+function topicHead(g,small){const r=g.round,t=TOPIC[r.topicId]||{n:r.topicId,t:'',cat:''};
+  return `<div class="topline"${small?' style="font-size:min(4.4vw,3.4vh)"':''}>TOPIC ${t.n} &nbsp;&middot;&nbsp; ${esc(t.cat).toUpperCase()}</div>
+    ${small?'':'<div class="gap"></div>'}
+    <div class="ttxt"${small?' style="font-size:min(5vw,4.4vh);margin-top:.35em"':''}>${esc(t.t)}</div>`}
+function vsBlock(r){return `<div class="vs">
+    <div class="vsT" style="background:linear-gradient(180deg,${tcol(r.A.no)}EE,${tcol(r.A.no)})">TEAM ${esc(r.A.no)}<b>${esc(r.A.name)}</b></div>
+    <div class="vsX">VS</div>
+    <div class="vsT" style="background:linear-gradient(180deg,${tcol(r.B.no)}EE,${tcol(r.B.no)})">TEAM ${esc(r.B.no)}<b>${esc(r.B.name)}</b></div>
+  </div>`}
 function board(g,live){const u=usedOf(g);let h='<div class="board">';
   CATS.forEach(c=>c.items.forEach(([n])=>{const d=!!u[n];
     h+=`<button class="tbox ${c.cls}${d?' used':''}" ${d||!live?'disabled':''} ${live&&!d?`onclick="A.pickTopic(${n})"`:''}>
       <span class="n">${n}</span><span class="w">${d?'DONE':c.short}</span></button>`}));
   return h+'</div>'}
+function teamCards(g,mode){const ts=teamsOf(g),a=g.pendingA,b=g.pendingB;
+  if(!ts.length)return '<div class="dots">Waiting for teams<span>.</span><span>.</span><span>.</span></div>';
+  return `<div class="tcards">`+ts.map(t=>{
+    const tag=(t.id===a)?'TEAM A':(t.id===b)?'TEAM B':'';
+    const dim=(mode==='pick'&&a&&b&&!tag)?' dim':'';
+    return `<div class="tcard${mode==='pick'?' pick':''}${dim}" style="background:linear-gradient(180deg,${tcol(t.no)}EE,${tcol(t.no)})"
+      ${mode==='pick'?`onclick="A.pickTeam('${t.id}')"`:''}>
+      ${tag?`<span class="tag">${tag}</span>`:''}
+      <span class="tn">${esc(t.no)}</span><span>${esc(t.name)}</span>
+      ${mode==='kick'?`<i class="x" onclick="event.stopPropagation();A.kick('${t.id}')">×</i>`:''}</div>`}).join('')+'</div>'}
 function stdTable(g){const s=standings(g);
   if(!s.length)return '<div class="note">No rounds completed yet.</div>';
   return `<table class="std"><tr><th>#</th><th>Team</th><th>Avg</th></tr>`+s.map((t,i)=>
-    `<tr><td>${i+1}</td><td>Team ${esc(t.no||'')} — ${esc(t.teamName)}<small>${t.n} round${t.n>1?'s':''} • ${t.voters} votes</small></td>
+    `<tr><td>${i+1}</td><td><span style="color:${tcol(t.no)}">Team ${esc(t.no||'')}</span> — ${esc(t.teamName)}<small>${t.n} debate${t.n>1?'s':''} • ${t.voters} votes</small></td>
      <td>${t.avg.toFixed(2)}</td></tr>`).join('')+'</table>'}
+function resultBlock(r){const aw=r.A.avg>=r.B.avg;
+  const cell=(x,win)=>`<div class="vsT" style="position:relative;background:linear-gradient(180deg,${tcol(x.no)}EE,${tcol(x.no)});${win?'outline:4px solid #fff;outline-offset:-4px':'opacity:.72'}">
+     ${win?'<span class="tag" style="position:absolute;top:-.8em;left:50%;transform:translateX(-50%);background:#0B0F24;color:#FFC531;font-family:Anton;font-size:.8em;letter-spacing:.12em;border-radius:999px;padding:1px 14px;white-space:nowrap">ROUND WINNER</span>':''}
+     TEAM ${esc(x.no)}<b>${esc(x.name)}</b>
+     <span style="display:block;font-family:Anton;font-size:2.4em;line-height:1.05;margin-top:.1em">${Number(x.avg).toFixed(2)}</span></div>`;
+  return `<div class="vs">${cell(r.A,aw)}<div class="vsX">VS</div>${cell(r.B,!aw)}</div>`}
 
 /* ---------------- HOST ---------------- */
 function hostView(g){
   const ph=g.phase,ts=teamsOf(g);
   if(ph==='lobby')return `<div class="card">
-    <div class="grow">
-      <div class="klabel">Game PIN</div>
-      <div class="pincode">${esc(S.pin)}</div>
+    <div class="grow"><div class="klabel">Game PIN</div><div class="pincode">${esc(S.pin)}</div>
       <div class="lb">teams &amp; audience enter this pin to join</div>
-      ${MODE==='demo'?DEMOWARN:''}${S.dbwarn?`<div class="warnbox">⚠ ${esc(S.dbwarn)}</div>`:''}
-    </div>
-    <div class="chips ${ts.length>12?'s2':ts.length>6?'s1':''}" style="margin:1.2vh 0">${ts.length?ts.map(t=>`<span class="chip"><b class="no">${esc(t.no)}</b>${esc(t.name)}
-      <i class="x" onclick="A.kick('${t.id}')">×</i></span>`).join(''):'<div class="dots">Waiting for teams<span>.</span><span>.</span><span>.</span></div>'}</div>
-    <div class="bar"><button class="btn green w2" ${ts.length?'':'disabled'} onclick="A.startShow()">▶ START THE SHOW</button>
+      ${MODE==='demo'?DEMOWARN:''}${S.dbwarn?`<div class="warnbox">⚠ ${esc(S.dbwarn)}</div>`:''}</div>
+    <div style="margin:1.2vh 0">${teamCards(g,'kick')}</div>
+    <div class="bar"><button class="btn green w2" ${ts.length>1?'':'disabled'} onclick="A.startShow()">▶ START THE SHOW</button>
       <button class="btn ghost sm" onclick="A.resetAll()">End game</button></div></div>`;
-  if(ph==='grid')return `<div class="card">
-    <div class="sec">Step 1 — tap the team &nbsp;›&nbsp; Step 2 — tap the topic</div>
-    <div class="chips ${ts.length>12?'s2':ts.length>6?'s1':''}" style="max-height:22vh;margin-bottom:1.2vh">${ts.length?ts.map(t=>
-      `<span class="chip pick ${g.pendingTeam===t.id?'sel':''}" onclick="A.pickTeam('${t.id}')"><b class="no">${esc(t.no)}</b>${esc(t.name)}</span>`).join('')
-      :'<div class="note">All teams left. Ask them to rejoin with the PIN.</div>'}</div>
+  if(ph==='grid'){const a=g.pendingA,b=g.pendingB;
+    return `<div class="card">
+    <div class="sec">${!a?'Step 1 — tap TEAM A':!b?'Step 2 — tap TEAM B':'Step 3 — tap the topic they will debate'}</div>
+    <div style="margin-bottom:1.2vh">${teamCards(g,'pick')}</div>
     ${board(g,true)}
     <div class="bar"><button class="btn w2" onclick="A.declare()">🏆 DECLARE THE WINNER</button>
       <button class="btn ghost sm" onclick="A.sheet(true)">Standings</button>
-      <button class="btn ghost sm" onclick="A.resetAll()">End game</button></div></div>`;
+      <button class="btn ghost sm" onclick="A.resetAll()">End game</button></div></div>`}
   if(ph==='topic'){const d=(g.round&&g.round.duration)||180;
-    return `<div class="card"><div class="grow">${topicHead(g,true)}</div>
-    <div class="sec" style="margin:1vh 0 .6vh">Debate time</div>
+    return `<div class="card"><div class="grow">${topicHead(g)}</div>${vsBlock(g.round)}
+    <div class="sec" style="margin:1.2vh 0 .6vh">Debate time</div>
     <div class="bar">${[60,120,180,300].map(s=>`<button class="btn sm ${d===s?'green':'ghost'}" onclick="A.setDuration(${s})">${s/60} min</button>`).join('')}</div>
     <div class="bar"><button class="btn green w2" onclick="A.startDebate()">🔔 START THE DEBATE</button>
       <button class="btn red sm" onclick="A.endRound()">End round</button></div></div>`}
   if(ph==='debate')return `<div class="card">
-    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true)}</div>
     <div class="bigtimer" id="bigTimer">--<span class="u">seconds remaining</span></div></div>
-    <div class="timerbar"><i id="timerBar" style="width:100%"></i></div>
+    ${vsBlock(g.round)}
+    <div class="timerbar" style="margin-top:1vh"><i id="timerBar" style="width:100%"></i></div>
     <div class="bar"><button class="btn w2" onclick="A.stopDebate()">⏹ STOP &amp; GO TO POLL</button>
       <button class="btn red sm" onclick="A.endRound()">End round</button></div></div>`;
   if(ph==='debateEnd')return `<div class="card">
-    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
-    <div><div class="dots">Debate over</div><div class="note">Audience phones are ready.</div></div></div>
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true)}</div>
+    <div class="dots">Debate over</div></div>${vsBlock(g.round)}
     <div class="bar"><button class="btn green w2" onclick="A.startPoll()">🗳️ AUDIENCE POLL BEGINS</button>
       <button class="btn red sm" onclick="A.endRound()">End round</button></div></div>`;
   if(ph==='poll')return `<div class="card">
-    <div class="sec">Audience is rating Team ${esc(g.round.teamNo)} — ${esc(g.round.teamName)}</div>
+    <div class="sec">Audience is rating both teams</div>${vsBlock(g.round)}
     <div class="grow"><div class="polltimer" id="pollTimer">30</div><div class="lb">seconds left to vote</div>
       <div class="bignum" id="voteCount">0</div><div class="lb">votes received</div></div>
     <div class="bar"><button class="btn ghost sm" onclick="A.closePoll()">Close the poll now</button></div></div>`;
-  if(ph==='roundResult'){const r=(g.results||{})['r'+g.round.n]||{avg:0,count:0};
-    return `<div class="card"><div class="sec">Round ${g.round.n} result</div>
-    <div class="grow"><div class="ttxt" style="font-size:min(6vw,5vh)">Team ${esc(g.round.teamNo)} — ${esc(g.round.teamName)}</div>
-      <div class="bignum" style="font-size:min(24vw,22vh)">${Number(r.avg).toFixed(2)}</div>
-      <div class="lb">average rating out of 10 &nbsp;•&nbsp; ${r.count} votes</div></div>
+  if(ph==='roundResult'){const r=(g.results||{})['r'+g.round.n];
+    return `<div class="card"><div class="sec">${topicName(g.round.topicId)}</div>
+    <div class="grow">${r?resultBlock(r):''}<div class="lb" style="margin-top:2vh">average rating out of 10 &nbsp;•&nbsp; ${r?r.count:0} votes</div></div>
     <div class="bar"><button class="btn red" onclick="A.endRound()">✔ END THE ROUND</button></div></div>`}
   return `<div class="card"><div class="grow"><div class="dots">…</div></div></div>`}
+const topicName=id=>'TOPIC '+id+' · '+((TOPIC[id]||{}).cat||'').toUpperCase();
 
 /* ---------------- TEAM ---------------- */
 function teamView(g){
@@ -545,62 +624,69 @@ function teamView(g){
   if(!me)return `<div class="card"><div class="grow"><div class="dots">You are out of the game</div>
     <div class="note">The host removed your team, or the game was reset.</div></div>
     <div class="bar"><button class="btn ghost" onclick="A.home()">Back to start</button></div></div>`;
-  const mine=g.round&&g.round.teamId===S.myTeamId;
+  const myCard=`<div class="vsT" style="max-width:620px;background:linear-gradient(180deg,${tcol(me.no)}EE,${tcol(me.no)});font-size:min(4.4vw,3vh)">
+      TEAM ${esc(me.no)}<b>${esc(me.name)}</b></div>`;
   if(ph==='lobby')return `<div class="card"><div class="grow">
-    <div class="klabel">You are in</div><div class="pincode" style="font-size:min(16vw,14vh)">TEAM ${esc(me.no)}</div>
-    <div class="ttxt" style="font-size:min(6vw,5vh)">${esc(me.name)}</div>
-    <div class="dots" style="margin-top:2vh;font-size:min(4.6vw,3.4vh)">Waiting for the host<span>.</span><span>.</span><span>.</span></div></div></div>`;
-  if(ph==='grid')return `<div class="card"><div class="sec">Team ${esc(me.no)} — ${esc(me.name)} &nbsp;•&nbsp; topics left</div>
-    ${board(g,false)}</div>`;
-  if(ph==='topic')return `<div class="card"><div class="grow">${topicHead(g,true)}
-    <div class="dots" style="margin-top:2vh;font-size:min(5vw,3.6vh)">${mine?'Get ready — you are up!':'Listen in'}</div></div></div>`;
+    <div class="klabel">You are in</div><div style="height:1.6vh"></div>${myCard}
+    <div class="dots" style="margin-top:3vh;font-size:min(4.6vw,3.4vh)">Waiting for the host<span>.</span><span>.</span><span>.</span></div></div></div>`;
+  if(ph==='grid')return `<div class="card"><div class="sec">Team ${esc(me.no)} — ${esc(me.name)} &nbsp;•&nbsp; topics left</div>${board(g,false)}</div>`;
+  const mine=g.round&&(g.round.A.id===S.myTeamId||g.round.B.id===S.myTeamId);
+  if(ph==='topic')return `<div class="card"><div class="grow">${topicHead(g)}</div>${vsBlock(g.round)}
+    <div class="dots" style="margin-top:1.4vh;font-size:min(4.6vw,3.2vh);text-align:center">${mine?'Get ready — you are up!':'Listen in'}</div></div>`;
   if(ph==='debate')return `<div class="card">
-    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true)}</div>
     <div class="bigtimer" id="bigTimer">--<span class="u">seconds remaining</span></div></div>
-    <div class="timerbar"><i id="timerBar" style="width:100%"></i></div></div>`;
+    ${vsBlock(g.round)}<div class="timerbar" style="margin-top:1vh"><i id="timerBar" style="width:100%"></i></div></div>`;
   if(ph==='debateEnd')return `<div class="card">
-    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
-    <div><div class="dots">Time up!</div><div class="note">Audience poll about to begin.</div></div></div></div>`;
-  if(ph==='poll')return `<div class="card"><div class="sec">Audience is voting</div>
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true)}</div>
+    <div class="dots">Time up!</div></div>${vsBlock(g.round)}</div>`;
+  if(ph==='poll')return `<div class="card"><div class="sec">Audience is voting</div>${vsBlock(g.round)}
     <div class="grow"><div class="polltimer" id="pollTimer">30</div><div class="lb">seconds left</div>
     <div class="bignum" id="voteCount">0</div><div class="lb">votes received</div></div></div>`;
-  if(ph==='roundResult'){const r=(g.results||{})['r'+g.round.n]||{avg:0,count:0};
-    return `<div class="card"><div class="sec">Round ${g.round.n} result</div><div class="grow">
-      <div class="ttxt" style="font-size:min(6vw,5vh)">Team ${esc(g.round.teamNo)} — ${esc(g.round.teamName)}</div>
-      <div class="bignum" style="font-size:min(24vw,22vh)">${Number(r.avg).toFixed(2)}</div>
-      <div class="lb">average rating • ${r.count} votes</div></div></div>`}
+  if(ph==='roundResult'){const r=(g.results||{})['r'+g.round.n];
+    return `<div class="card"><div class="sec">${topicName(g.round.topicId)}</div>
+    <div class="grow">${r?resultBlock(r):''}<div class="lb" style="margin-top:2vh">average rating • ${r?r.count:0} votes</div></div></div>`}
   return `<div class="card"><div class="grow"><div class="dots">…</div></div></div>`}
 
 /* ---------------- AUDIENCE ---------------- */
 function audView(g){
   const ph=g.phase;
-  if(ph==='topic')return `<div class="card"><div class="grow">${topicHead(g,true)}
-    <div class="note">You will rate this team out of 10.</div></div></div>`;
+  if(ph==='topic')return `<div class="card"><div class="grow">${topicHead(g)}</div>${vsBlock(g.round)}
+    <div class="note">You will rate both teams out of 10.</div></div>`;
   if(ph==='debate')return `<div class="card">
-    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true)}</div>
     <div class="bigtimer" id="bigTimer">--<span class="u">seconds remaining</span></div></div>
-    <div class="timerbar"><i id="timerBar" style="width:100%"></i></div></div>`;
+    ${vsBlock(g.round)}<div class="timerbar" style="margin-top:1vh"><i id="timerBar" style="width:100%"></i></div></div>`;
   if(ph==='debateEnd')return `<div class="card">
-    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
-    <div class="dots">Get ready to vote</div></div></div>`;
-  if(ph==='poll'){const v=votesOf(g),done=v[S.uid]!==undefined;
-    if(done)return `<div class="card"><div class="grow"><div class="dots" style="color:#6DF0B2">Vote recorded ✓</div>
-      <div class="bignum">${v[S.uid]}</div><div class="lb">your rating for ${esc(g.round.teamName)}</div>
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true)}</div>
+    <div class="dots">Get ready to vote</div></div>${vsBlock(g.round)}</div>`;
+  if(ph==='poll'){const v=votesOf(g),mine=v[S.uid];
+    if(mine)return `<div class="card"><div class="grow"><div class="dots" style="color:#6DF0B2">Vote recorded ✓</div>
+      <div class="vs" style="margin-top:2vh">
+        <div class="vsT" style="background:linear-gradient(180deg,${tcol(g.round.A.no)}EE,${tcol(g.round.A.no)})">${esc(g.round.A.name)}
+          <b style="font-size:2em">${esc(mine.a)}</b></div>
+        <div class="vsX">&nbsp;</div>
+        <div class="vsT" style="background:linear-gradient(180deg,${tcol(g.round.B.no)}EE,${tcol(g.round.B.no)})">${esc(g.round.B.name)}
+          <b style="font-size:2em">${esc(mine.b)}</b></div></div>
       <div class="note">Thank you! Sit back for the result.</div></div></div>`;
     const k=['#FF3B4E','#FF5B3B','#FF7A2E','#FF9A1F','#FFB020','#FFC531','#D8D63A','#A9DA4A','#6DD86A','#27D17C'];
-    return `<div class="card"><div class="sec">Rate Team ${esc(g.round.teamNo)} — ${esc(g.round.teamName)}</div>
-      <div style="text-align:center"><span class="polltimer" id="pollTimer" style="font-size:min(13vw,8vh)">30</span>
-      <span class="lb" style="display:inline;margin-left:8px">sec left</span></div>
-      <div class="scalewrap"><div class="scale">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="sc ${S.pickedRating===n?'on':''}"
-        style="background:linear-gradient(180deg,${k[n-1]}CC,${k[n-1]})" onclick="A.rate(${n})">${n}</button>`).join('')}</div></div>
-      <div class="legend"><span>1 = Poor</span><span>10 = Outstanding</span></div>
-      <div class="bar"><button class="btn green" ${S.pickedRating==null?'disabled':''} onclick="A.submitVote()">
-        ${S.pickedRating==null?'SELECT A RATING FIRST':'SUBMIT MY RATING ('+S.pickedRating+')'}</button></div></div>`}
-  if(ph==='roundResult'){const r=(g.results||{})['r'+g.round.n]||{avg:0,count:0};
-    return `<div class="card"><div class="sec">Round ${g.round.n} result</div><div class="grow">
-      <div class="ttxt" style="font-size:min(6vw,5vh)">Team ${esc(g.round.teamNo)} — ${esc(g.round.teamName)}</div>
-      <div class="bignum" style="font-size:min(24vw,22vh)">${Number(r.avg).toFixed(2)}</div>
-      <div class="lb">average rating • ${r.count} votes</div></div></div>`}
+    const pad=(side,sel)=>`<div class="scale">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="sc ${sel===n?'on':''}"
+       style="background:linear-gradient(180deg,${k[n-1]}CC,${k[n-1]})" onclick="A.rate('${side}',${n})">${n}</button>`).join('')}</div>`;
+    const ready=S.rateA!=null&&S.rateB!=null;
+    return `<div class="card">
+      <div style="text-align:center;flex:0 0 auto"><span class="polltimer" id="pollTimer" style="font-size:min(11vw,7vh)">30</span>
+        <span class="lb" style="display:inline;margin-left:8px">sec left — rate BOTH teams</span></div>
+      <div class="scalewrap">
+        <div class="slabel" style="background:${tcol(g.round.A.no)}">TEAM ${esc(g.round.A.no)} — ${esc(g.round.A.name)}${S.rateA!=null?' &nbsp;✓ '+S.rateA:''}</div>
+        ${pad('a',S.rateA)}
+        <div class="slabel" style="background:${tcol(g.round.B.no)}">TEAM ${esc(g.round.B.no)} — ${esc(g.round.B.name)}${S.rateB!=null?' &nbsp;✓ '+S.rateB:''}</div>
+        ${pad('b',S.rateB)}
+      </div>
+      <div class="bar"><button class="btn green" ${ready?'':'disabled'} onclick="A.submitVote()">
+        ${ready?'SUBMIT MY RATINGS ('+S.rateA+' / '+S.rateB+')':'RATE BOTH TEAMS FIRST'}</button></div></div>`}
+  if(ph==='roundResult'){const r=(g.results||{})['r'+g.round.n];
+    return `<div class="card"><div class="sec">${topicName(g.round.topicId)}</div>
+    <div class="grow">${r?resultBlock(r):''}<div class="lb" style="margin-top:2vh">average rating • ${r?r.count:0} votes</div></div></div>`}
   return `<div class="card"><div class="grow"><div class="dots">Waiting for the next debate<span>.</span><span>.</span><span>.</span></div>
     <div class="note">Keep this page open — your rating screen appears on its own.</div></div></div>`}
 
@@ -610,9 +696,10 @@ function viewKey(){const g=S.game;
   if(S.screen!=='live')return S.screen+'|'+S.err;
   if(!g)return 'none';
   const t=Object.entries(g.teams||{}).map(([k,v])=>k+v.no+v.name).join(',');
-  const mv=g.round?((g.votes||{})['r'+g.round.n]||{})[S.uid]:'';
-  return [S.role,g.phase,g.round?g.round.n+'-'+g.round.topicId+'-'+g.round.teamId+'-'+g.round.duration:'x',
-    t,Object.keys(g.used||{}).join(''),g.pendingTeam||'',mv,S.pickedRating,Object.keys(g.results||{}).length].join('|')}
+  const mv=g.round?JSON.stringify(((g.votes||{})['r'+g.round.n]||{})[S.uid]||''):'';
+  return [S.role,g.phase,g.round?g.round.n+'-'+g.round.topicId+'-'+g.round.duration:'x',
+    t,Object.keys(g.used||{}).join(''),g.pendingA||'',g.pendingB||'',mv,S.rateA,S.rateB,
+    Object.keys(g.results||{}).length].join('|')}
 function render(force){
   const k=viewKey(); if(!force&&k===lastKey){overlay();return} lastKey=k;
   const app=el('app'),g=S.game;
@@ -625,7 +712,7 @@ function render(force){
     <div class="note">The host ended this game.</div></div>
     <div class="bar"><button class="btn ghost" onclick="A.home()">Back to start</button></div></div>`;
   else app.innerHTML = S.role==='host'?hostView(g) : S.role==='team'?teamView(g) : audView(g);
-  overlay(); tick();
+  fitBrand(); overlay(); tick();
 }
 function overlay(force){
   const g=S.game,o=el('overlay');
@@ -634,11 +721,13 @@ function overlay(force){
   if(!g||g.phase!=='countdown'){if(o.innerHTML){o.innerHTML='';winShown=false;lastN=-1}return}
   const e=(now()-(g.countAt||now()))/1000;
   if(e<5){const n=Math.max(1,5-Math.floor(e));
-    if(n!==lastN){lastN=n;beep(560+(5-n)*90,.12,.22);o.innerHTML=`<div class="ov count"><div class="n">${n}</div></div>`}return}
-  if(!winShown){winShown=true;const s=standings(g),w=s[0];
+    if(n!==lastN){lastN=n;beep(560+(5-n)*90,.14,.24);
+      o.innerHTML=`<div class="ov count"><div class="k" style="font-family:'Bebas Neue';letter-spacing:.4em;font-size:min(4vw,2.6vh);color:#FFD98A">Counting the audience votes</div><div class="n">${n}</div></div>`}return}
+  if(!winShown){winShown=true;const s=standings(g),w=s[0],r=s[1];
     o.innerHTML=`<div class="ov win"><div class="k">The audience has decided</div>
       <div class="nm">${esc(w?('Team '+(w.no||'')+' — '+w.teamName):'—')}</div>
-      <div class="s2">${w?w.avg.toFixed(2):'0'} / 10</div>
+      <div class="s2">${w?w.avg.toFixed(2):'0'} / 10 &nbsp;average</div>
+      ${r?`<div class="lb" style="margin-top:1.6vh">runner-up &nbsp;·&nbsp; Team ${esc(r.no||'')} — ${esc(r.teamName)} &nbsp;·&nbsp; ${r.avg.toFixed(2)}</div>`:''}
       <div style="width:100%;max-width:720px;margin-top:2vh">${stdTable(g)}</div>
       ${S.role==='host'?'<button class="btn ghost sm" style="max-width:240px;margin-top:2vh" onclick="A.backToGrid()">Back to topics</button>':''}</div>`;
     confetti();beep(660,.18,.2);setTimeout(()=>beep(880,.25,.2),180)}
@@ -648,10 +737,10 @@ function tick(){const g=S.game;if(!g)return;
   if(g.phase==='countdown'){overlay();return}
   if(g.phase==='debate'&&g.round&&g.round.endAt){
     const left=Math.max(0,(g.round.endAt-now())/1000),t=el('bigTimer'),b=el('timerBar'),s=Math.ceil(left);
-    if(t){t.innerHTML=s+'<span class="u">seconds remaining</span>';t.classList.toggle('warn',left<=10&&left>0);
-      if(s!==S.lastTick&&s<=10&&s>0){S.lastTick=s;beep(900,.09,.25)}}
+    if(t){t.innerHTML=s+'<span class="u">seconds remaining</span>';t.classList.toggle('warn',left<=10&&left>0)}
+    if(s!==S.lastTick&&s>0){S.lastTick=s;beep(s<=10?900:520,s<=10?.09:.045,s<=10?.26:.11)}
     if(b)b.style.width=(100*left/((g.round.duration)||180))+'%';
-    if(left<=0&&S.role==='host'&&S.guard!=='de'+g.round.n){S.guard='de'+g.round.n;gref().update({phase:'debateEnd'});beep(400,.4,.25)}}
+    if(left<=0&&S.role==='host'&&S.guard!=='de'+g.round.n){S.guard='de'+g.round.n;gref().update({phase:'debateEnd'});beep(300,.5,.28)}}
   if(g.phase==='poll'&&g.round&&g.round.pollEndAt){
     const left=Math.max(0,(g.round.pollEndAt-now())/1000),p=el('pollTimer'),s=Math.ceil(left);
     if(p){p.textContent=s;p.classList.toggle('warn',left<=10&&left>0)}
@@ -661,7 +750,7 @@ function tick(){const g=S.game;if(!g)return;
 }
 document.addEventListener('click',()=>{if(!AC&&S.role==='host'){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}},{once:true});
 window.addEventListener('resize',()=>render(true));
-render(true);
+render(true); fitBrand(); setTimeout(fitBrand,400);
 </script>
 </body>
 </html>
