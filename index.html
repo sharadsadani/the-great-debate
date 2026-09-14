@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>The Great Debate — Shree Balaji Rajasthani Mandal</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#FFC531;--ink:#E9EEFF;--muted:#9AA6D0;--deep:#070B1E;
+  --c1:#FF5C8A;--c2:#3EC9FF;--c3:#FFB020;--c4:#8B5CF6;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
+html,body{height:100%;width:100%;overflow:hidden;position:fixed;inset:0}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--deep)}
+
+/* ---------- background ---------- */
+.bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.bg .sky{position:absolute;inset:0;background:
+  radial-gradient(1100px 620px at 50% -8%,#24306B 0%,transparent 60%),
+  radial-gradient(800px 520px at 8% 105%,#3A0E32 0%,transparent 65%),
+  radial-gradient(800px 520px at 92% 105%,#0E2F44 0%,transparent 65%),
+  linear-gradient(180deg,#070B1E,#0C1230 45%,#070B1E)}
+.bg .beam{position:absolute;top:-12vh;width:44vw;height:150vh;filter:blur(16px);opacity:.26;
+  background:linear-gradient(180deg,rgba(255,197,49,.55),rgba(255,197,49,0) 70%)}
+.bg .beam.l{left:-6vw;transform:rotate(16deg);transform-origin:top center;animation:sw 9s ease-in-out infinite alternate}
+.bg .beam.r{right:-6vw;transform:rotate(-16deg);transform-origin:top center;animation:sw2 11s ease-in-out infinite alternate;
+  background:linear-gradient(180deg,rgba(62,201,255,.5),rgba(62,201,255,0) 70%)}
+@keyframes sw{from{transform:rotate(12deg)}to{transform:rotate(20deg)}}
+@keyframes sw2{from{transform:rotate(-20deg)}to{transform:rotate(-12deg)}}
+.bg .q{position:absolute;font-family:Anton,serif;color:#fff;opacity:.04;line-height:.7}
+.bg .q1{left:1vw;top:16vh;font-size:30vh}.bg .q2{right:1vw;bottom:2vh;font-size:30vh;transform:rotate(180deg)}
+.bg .podium{position:absolute;bottom:0;width:18vw;max-width:250px;height:26vh;opacity:.5}
+.bg .podium.l{left:1vw}.bg .podium.r{right:1vw}
+.bg .arch{position:absolute;top:0;left:0;right:0;height:clamp(22px,4.6vh,44px);opacity:.85}
+.bg .floor{position:absolute;left:0;right:0;bottom:0;height:30vh;opacity:.18;
+  background:repeating-linear-gradient(90deg,rgba(255,197,49,.25) 0 1px,transparent 1px 62px),
+             repeating-linear-gradient(0deg,rgba(255,197,49,.16) 0 1px,transparent 1px 42px);
+  transform:perspective(420px) rotateX(64deg);transform-origin:bottom center;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 60%);mask-image:linear-gradient(180deg,transparent,#000 60%)}
+
+/* ---------- fixed shell ---------- */
+.wrap{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
+  padding:calc(env(safe-area-inset-top,0px) + clamp(4px,1.4vh,12px)) clamp(8px,1.6vw,20px) clamp(6px,1.4vh,14px)}
+.brand{text-align:center;flex:0 0 auto;line-height:1}
+.brand h1{font-family:Anton,sans-serif;white-space:nowrap;letter-spacing:.4px;
+  font-size:min(4.2vw,3.4vh);
+  background:linear-gradient(180deg,#FFF3C4,#FFC531 45%,#FF8A00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand .sub{margin-top:.5vh;font-size:min(2.1vw,1.5vh);font-weight:800;letter-spacing:.26em;color:#FFD98A;white-space:nowrap}
+.brand .sub b{color:#fff;font-weight:900}
+main{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:clamp(6px,1.4vh,14px) 0 0}
+.card{width:100%;max-width:1180px;height:100%;display:flex;flex-direction:column;min-height:0;
+  background:rgba(12,18,48,.72);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.10);
+  border-radius:clamp(12px,2vh,22px);padding:clamp(10px,2vh,20px);box-shadow:0 20px 60px rgba(0,0,0,.55)}
+.card.mid{max-width:520px;height:auto;max-height:100%;margin:auto;justify-content:center}
+.grow{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.sec{flex:0 0 auto;text-align:center;font-size:min(2.2vw,1.55vh);letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);font-weight:900;margin-bottom:clamp(6px,1.2vh,12px)}
+
+/* ---------- buttons ---------- */
+.btn{display:block;width:100%;border:0;cursor:pointer;border-radius:clamp(10px,1.8vh,16px);
+  padding:clamp(10px,2.1vh,20px) 16px;font-weight:900;font-size:min(3.4vw,2.4vh);letter-spacing:.04em;
+  color:#0A0E22;background:linear-gradient(180deg,#FFD965,#FFAE23);font-family:Inter;
+  box-shadow:0 6px 0 rgba(0,0,0,.35);transition:transform .08s}
+.btn:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.btn+.btn{margin-top:clamp(8px,1.4vh,14px)}
+.btn.blue{background:linear-gradient(180deg,#7FC2FF,#3E8BFF);color:#03122B}
+.btn.violet{background:linear-gradient(180deg,#C4AEFF,#8B5CF6);color:#140A33}
+.btn.green{background:linear-gradient(180deg,#6DF0B2,#1FBF6D);color:#032417}
+.btn.red{background:linear-gradient(180deg,#FF8A96,#F0243A);color:#fff}
+.btn.ghost{background:transparent;border:1.5px solid rgba(255,255,255,.28);color:var(--ink);box-shadow:none}
+.btn.sm{padding:clamp(7px,1.4vh,12px) 12px;font-size:min(2.8vw,1.8vh);border-radius:11px;box-shadow:0 4px 0 rgba(0,0,0,.3)}
+.btn:disabled{filter:grayscale(.8) brightness(.62);cursor:not-allowed}
+.bar{flex:0 0 auto;display:flex;gap:clamp(6px,1.2vw,12px);margin-top:clamp(8px,1.4vh,14px)}
+.bar>*{flex:1;margin-top:0!important}
+.bar .w2{flex:2}
+
+input{width:100%;padding:clamp(10px,1.9vh,16px);border-radius:12px;border:1.5px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.06);color:#fff;font-size:min(4vw,2.2vh);font-weight:700;outline:none;font-family:Inter}
+input::placeholder{color:#7E8AB5;font-weight:600}
+input:focus{border-color:var(--gold);background:rgba(255,255,255,.10)}
+.lbl{display:block;font-size:min(2.6vw,1.4vh);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  margin:clamp(8px,1.6vh,14px) 0 6px;font-weight:800}
+.err{color:#FF9AA6;font-weight:800;text-align:center;margin-top:8px;min-height:1.4em;font-size:min(3vw,1.7vh)}
+.note{color:var(--muted);font-size:min(2.8vw,1.6vh);text-align:center;margin-top:10px;line-height:1.5}
+.back{position:absolute;left:10px;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:9;background:rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:999px;padding:7px 14px;font-weight:800;font-size:12px;cursor:pointer}
+.modepill{position:absolute;right:8px;bottom:4px;z-index:9;font-size:10px;font-weight:800;letter-spacing:.1em;
+  padding:4px 9px;border-radius:999px;background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.16);color:#9AA6D0}
+
+/* ---------- PIN ---------- */
+.pincode{font-family:Anton,sans-serif;line-height:.9;letter-spacing:.05em;
+  font-size:min(22vw,26vh);
+  background:linear-gradient(180deg,#FFFDF2,#FFC531 40%,#FF6A00);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 34px rgba(255,154,31,.4))}
+.klabel{font-size:min(2.6vw,1.7vh);letter-spacing:.34em;color:#FFD98A;font-weight:900;text-transform:uppercase}
+.chips{flex:0 1 auto;display:flex;flex-wrap:wrap;gap:clamp(4px,.9vh,10px);justify-content:center;align-content:flex-start;
+  overflow:hidden;max-height:30vh}
+.chips.s1 .chip{font-size:min(2.4vw,1.6vh);padding:clamp(4px,.9vh,8px) clamp(8px,1.1vw,13px)}
+.chips.s2 .chip{font-size:min(2vw,1.35vh);padding:3px 9px;gap:5px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;padding:clamp(5px,1.1vh,10px) clamp(10px,1.4vw,16px);font-weight:900;font-size:min(2.9vw,1.9vh);animation:pop .25s ease}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.chip .no{background:linear-gradient(180deg,#FFD965,#FFAE23);color:#0A0E22;border-radius:8px;padding:2px 8px;font-family:Anton}
+.chip .x{background:rgba(255,59,78,.18);border:1px solid rgba(255,59,78,.5);color:#FF8A96;border-radius:50%;
+  width:1.9em;height:1.9em;display:grid;place-items:center;cursor:pointer;font-weight:900;line-height:1}
+.chip.sel{background:linear-gradient(180deg,#6DF0B2,#1FBF6D);color:#032417;border-color:transparent}
+.chip.pick{cursor:pointer}
+
+/* ---------- TOPIC BOARD (full screen wall of boxes) ---------- */
+.board{flex:1;min-height:0;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(4,1fr);
+  gap:clamp(5px,1.1vh,14px)}
+.tbox{position:relative;border:0;cursor:pointer;border-radius:clamp(8px,1.8vh,20px);overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2em;padding:2px;
+  font-family:Anton,sans-serif;color:#0B0F24;box-shadow:0 5px 0 rgba(0,0,0,.32);transition:transform .09s}
+.tbox:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.32)}
+.tbox .n{font-size:min(9vw,7.4vh);line-height:.92}
+.tbox .w{font-family:Inter;font-size:min(1.9vw,1.25vh);font-weight:900;letter-spacing:.12em;opacity:.72;
+  text-transform:uppercase;padding:0 4px;text-align:center;line-height:1.1}
+.tbox.used{filter:grayscale(1) brightness(.4);cursor:not-allowed;box-shadow:none}
+.tbox.used::after{content:"";position:absolute;left:6%;right:6%;top:50%;height:5px;background:#fff;border-radius:4px;
+  transform:rotate(-16deg);opacity:.85}
+.c1{background:linear-gradient(180deg,#FF9EBB,#FF5C8A)}
+.c2{background:linear-gradient(180deg,#8FE1FF,#3EC9FF)}
+.c3{background:linear-gradient(180deg,#FFD98A,#FFB020)}
+.c4{background:linear-gradient(180deg,#C4AEFF,#8B5CF6)}
+
+/* ---------- topic / debate ---------- */
+.rd{flex:0 0 auto;font-size:min(2.4vw,1.6vh);letter-spacing:.22em;color:#FFD98A;font-weight:900;text-transform:uppercase;text-align:center}
+.tno{font-family:Anton;font-size:min(9vw,8vh);line-height:1;text-align:center;
+  background:linear-gradient(180deg,#FFFDF2,#FFC531 45%,#FF6A00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ttxt{font-family:Anton,sans-serif;font-size:min(6.4vw,6.2vh);line-height:1.1;text-align:center;max-width:1000px;
+  margin:.3em auto 0;text-shadow:0 4px 22px rgba(0,0,0,.6)}
+.teamchip{display:inline-flex;align-items:center;gap:8px;margin-top:1.2vh;padding:clamp(6px,1.2vh,12px) clamp(12px,1.6vw,22px);
+  border-radius:999px;background:rgba(62,139,255,.16);border:1px solid rgba(62,139,255,.45);
+  font-weight:900;font-size:min(3.4vw,2.3vh)}
+.bigtimer{font-family:Anton,sans-serif;line-height:.88;text-align:center;color:#FFE9A8;
+  font-size:min(34vw,30vh);text-shadow:0 0 40px rgba(255,197,49,.35)}
+.bigtimer.warn{color:#FF4A5C;text-shadow:0 0 46px rgba(255,59,78,.85);animation:blink .55s steps(1) infinite}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.16}}
+.u{font-family:Inter;display:block;font-size:min(2.4vw,1.5vh);letter-spacing:.3em;color:var(--muted);font-weight:900;margin-top:.6vh}
+.timerbar{flex:0 0 auto;height:clamp(6px,1.3vh,13px);border-radius:999px;background:rgba(255,255,255,.10);
+  overflow:hidden;width:100%;max-width:900px;margin:1vh auto 0}
+.timerbar i{display:block;height:100%;background:linear-gradient(90deg,#27D17C,#FFC531,#FF3B4E);transition:width .2s linear}
+
+/* ---------- poll ---------- */
+.polltimer{font-family:Anton;text-align:center;font-size:min(30vw,26vh);line-height:.9;color:#FFE9A8}
+.polltimer.warn{color:#FF4A5C;animation:blink .5s steps(1) infinite}
+.bignum{font-family:Anton;font-size:min(16vw,15vh);line-height:1;color:#6DF0B2}
+.lb{font-size:min(2.4vw,1.5vh);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);font-weight:900;text-align:center}
+.scalewrap{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.scale{width:100%;aspect-ratio:5/2.25;max-height:100%;display:grid;grid-template-columns:repeat(5,1fr);
+  grid-template-rows:repeat(2,1fr);gap:clamp(5px,1.2vh,12px)}
+.sc{border:0;cursor:pointer;border-radius:clamp(10px,1.8vh,18px);font-family:Anton;font-size:min(9vw,8vh);
+  color:#0B0F24;box-shadow:0 5px 0 rgba(0,0,0,.3);transition:transform .08s}
+.sc:active{transform:translateY(3px)}
+.sc.on{outline:4px solid #fff;outline-offset:-4px;transform:scale(1.04);box-shadow:0 9px 0 rgba(0,0,0,.4)}
+.legend{flex:0 0 auto;display:flex;justify-content:space-between;font-size:min(2.4vw,1.4vh);letter-spacing:.16em;
+  font-weight:900;color:var(--muted);text-transform:uppercase;margin-top:.8vh}
+
+/* ---------- overlays ---------- */
+.ov{position:absolute;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:clamp(12px,3vh,30px)}
+.ov.count{background:radial-gradient(circle at 50% 50%,#1A2456,#05081A)}
+.ov.count .n{font-family:Anton;font-size:min(62vw,62vh);line-height:1;color:#FFC531;
+  text-shadow:0 0 80px rgba(255,197,49,.6);animation:zoom .95s ease-out}
+@keyframes zoom{from{transform:scale(.25);opacity:0}60%{opacity:1}to{transform:scale(1)}}
+.ov.win{background:radial-gradient(circle at 50% 40%,#2A1A05,#05081A 70%)}
+.ov.win .k{font-family:'Bebas Neue',sans-serif;letter-spacing:.4em;font-size:min(3.4vw,2.4vh);color:#FFD98A}
+.ov.win .nm{font-family:Anton;font-size:min(11vw,13vh);line-height:1.02;margin:1.4vh 0;
+  background:linear-gradient(180deg,#FFFDF2,#FFC531 45%,#FF6A00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ov.win .s2{font-family:Anton;font-size:min(6vw,6vh);color:#6DF0B2}
+.ov.sheet{background:rgba(5,8,26,.93);backdrop-filter:blur(8px)}
+.conf{position:absolute;inset:0;z-index:49;pointer-events:none;overflow:hidden}
+.conf i{position:absolute;top:-12vh;width:9px;height:15px;opacity:.9;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(120vh) rotate(720deg)}}
+
+table.std{width:100%;max-width:720px;border-collapse:separate;border-spacing:0 clamp(4px,.9vh,9px)}
+table.std th{font-size:min(2.2vw,1.3vh);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0 10px}
+table.std td{padding:clamp(7px,1.4vh,13px) 10px;background:rgba(255,255,255,.06);font-weight:800;font-size:min(3.2vw,2vh);text-align:left}
+table.std td:first-child{border-radius:10px 0 0 10px;width:3em}
+table.std td:last-child{border-radius:0 10px 10px 0;text-align:right;color:#FFD98A;font-family:Anton;font-size:min(4.4vw,3vh)}
+table.std td small{display:block;font-weight:600;font-size:.62em;color:#9AA6D0;font-family:Inter}
+.dots{font-family:Anton;font-size:min(7vw,6vh);color:#FFD98A;line-height:1.1}
+.dots span{animation:dot 1.2s infinite}.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,100%{opacity:.2}50%{opacity:1}}
+@media(orientation:portrait) and (max-width:620px){
+  .bg .podium{display:none}
+  .tbox .n{font-size:min(11vw,6.6vh)}
+  .brand h1{font-size:min(4.9vw,3vh)}
+  .bigtimer{font-size:min(48vw,30vh)}
+  .polltimer{font-size:min(44vw,26vh)}
+  .ttxt{font-size:min(8vw,6.2vh)}
+  .tno{font-size:min(13vw,8vh)}
+  .scale{aspect-ratio:5/3}
+  .sc{font-size:min(11vw,8vh)}
+  .brand .sub{font-size:min(2.7vw,1.4vh);letter-spacing:.18em}
+}
+</style>
+</head>
+<body>
+<div class="bg">
+  <div class="sky"></div><div class="beam l"></div><div class="beam r"></div>
+  <div class="q q1">&ldquo;</div><div class="q q2">&ldquo;</div>
+  <svg class="arch" viewBox="0 0 1200 70" preserveAspectRatio="none">
+    <defs><linearGradient id="ag" x1="0" x2="1"><stop offset="0" stop-color="#FF6A00"/><stop offset=".5" stop-color="#FFC531"/><stop offset="1" stop-color="#FF6A00"/></linearGradient></defs>
+    <path d="M0,0 H1200 V10 Q600,72 0,10 Z" fill="url(#ag)"/>
+    <g fill="#FFC531" opacity=".85"><circle cx="150" cy="34" r="6"/><circle cx="300" cy="47" r="6"/><circle cx="450" cy="55" r="6"/><circle cx="600" cy="58" r="7"/><circle cx="750" cy="55" r="6"/><circle cx="900" cy="47" r="6"/><circle cx="1050" cy="34" r="6"/></g>
+  </svg>
+  <svg class="podium l" viewBox="0 0 200 240" preserveAspectRatio="xMidYMax meet"><g fill="#FFC531" opacity=".2"><path d="M40 90h120l-14 150H54z"/><rect x="20" y="70" width="160" height="26" rx="8"/><rect x="94" y="10" width="9" height="62" rx="4"/><circle cx="99" cy="8" r="12"/></g></svg>
+  <svg class="podium r" viewBox="0 0 200 240" preserveAspectRatio="xMidYMax meet"><g fill="#3EC9FF" opacity=".2"><path d="M40 90h120l-14 150H54z"/><rect x="20" y="70" width="160" height="26" rx="8"/><rect x="94" y="10" width="9" height="62" rx="4"/><circle cx="99" cy="8" r="12"/></g></svg>
+  <div class="floor"></div>
+</div>
+<div class="wrap">
+  <header class="brand">
+    <h1>Shree Balaji Rajasthani Mandal</h1>
+    <div class="sub">Ganesh Utsav &middot; 2026 &nbsp;&#8226;&nbsp; <b>THE GREAT DEBATE</b></div>
+  </header>
+  <main id="app"></main>
+</div>
+<div id="overlay"></div>
+<div class="modepill" id="modepill"></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+/* =====================================================================
+   STEP 1 — PASTE YOUR FIREBASE CONFIG BELOW (the same one you use for
+   Aapna Kahoot works — this app stores data in a separate "debate2026"
+   branch, so your quiz data is untouched).
+   Leave it as-is and the app still runs in DEMO MODE on one device.
+   ===================================================================== */
+var FIREBASE_CONFIG = {
+  apiKey: "PASTE_YOUR_API_KEY",
+  authDomain: "PASTE.firebaseapp.com",
+  databaseURL: "https://PASTE-default-rtdb.firebaseio.com",
+  projectId: "PASTE",
+  storageBucket: "PASTE.appspot.com",
+  messagingSenderId: "PASTE",
+  appId: "PASTE"
+};
+</script>
+<script>
+const CATS=[
+ {name:'Everyday Life',short:'EVERYDAY',cls:'c1',items:[
+  [1,'Joint families are better than nuclear families.'],
+  [2,'Village life is better than city life.'],
+  [3,'Money can buy happiness.'],
+  [4,'Homemade food is always better than restaurant food.'],
+  [5,'Pocket money should be earned, not given.']]},
+ {name:'Technology & Media',short:'TECH',cls:'c2',items:[
+  [6,'Mobile phones have done more harm than good.'],
+  [7,'Social media brings people together more than it divides them.'],
+  [8,'Children under 15 should not own a smartphone.'],
+  [9,'Online classes can replace classroom teaching.'],
+  [10,'Television / OTT has killed the reading habit.']]},
+ {name:'School & Learning',short:'SCHOOL',cls:'c3',items:[
+  [11,'Exams are a fair way to judge a student.'],
+  [12,'Homework should be abolished.'],
+  [13,'Sports are as important as studies.'],
+  [14,'English is more useful than the mother tongue.'],
+  [15,'School uniforms should be compulsory.']]},
+ {name:'Society & Values',short:'SOCIETY',cls:'c4',items:[
+  [16,'Women manage money better than men.'],
+  [17,'Celebrities are bad role models for the young.'],
+  [18,'Strict parents raise more successful children.'],
+  [19,'Cricket gets too much attention in India compared to other sports.'],
+  [20,'Failure teaches more than success.']]}];
+const TOPIC={}; CATS.forEach(c=>c.items.forEach(([n,t])=>TOPIC[n]={n,t,cat:c.name,short:c.short,cls:c.cls}));
+const HOST_PASSWORD='Sharad', ROOT='debate2026';
+
+/* ---------------- demo DB ---------------- */
+function LocalDB(){
+  const KEY='sbrm_debate_db', bc=('BroadcastChannel'in window)?new BroadcastChannel('sbrm_debate'):null;
+  let L=[]; const cl=o=>o===undefined?null:JSON.parse(JSON.stringify(o));
+  const rd=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}};
+  const sg=p=>String(p||'').split('/').filter(Boolean);
+  const gp=(o,p)=>sg(p).reduce((a,k)=>(a==null?null:(a[k]===undefined?null:a[k])),o);
+  function sp(o,p,v){const k=sg(p);let c=o;for(let i=0;i<k.length-1;i++){if(typeof c[k[i]]!=='object'||c[k[i]]===null)c[k[i]]={};c=c[k[i]];}
+    if(v===null||v===undefined)delete c[k[k.length-1]];else c[k[k.length-1]]=v;}
+  function nf(){const a=rd();L.forEach(l=>l.cb({val:()=>cl(gp(a,l.path))}))}
+  function wr(o){localStorage.setItem(KEY,JSON.stringify(o));nf();if(bc)bc.postMessage(1)}
+  window.addEventListener('storage',e=>{if(e.key===KEY)nf()}); if(bc)bc.onmessage=nf;
+  return{ref(path){return{
+    on(_e,cb){L.push({path,cb});cb({val:()=>cl(gp(rd(),path))});return cb},
+    off(){L=L.filter(l=>l.path!==path)},
+    set(v){const a=rd();sp(a,path,cl(v));wr(a);return Promise.resolve()},
+    update(o){const a=rd();Object.keys(o).forEach(k=>sp(a,path+'/'+k,cl(o[k])));wr(a);return Promise.resolve()},
+    remove(){const a=rd();sp(a,path,null);wr(a);return Promise.resolve()},
+    once(){return Promise.resolve({val:()=>cl(gp(rd(),path))})}
+  }}};
+}
+let DB=null,MODE='demo',SRV=0;
+(function(){
+  const ok=FIREBASE_CONFIG&&FIREBASE_CONFIG.databaseURL&&FIREBASE_CONFIG.databaseURL.indexOf('PASTE')===-1;
+  if(ok&&window.firebase){try{firebase.initializeApp(FIREBASE_CONFIG);DB=firebase.database();MODE='live';
+    DB.ref('.info/serverTimeOffset').on('value',s=>{SRV=s.val()||0});}catch(e){console.error(e);DB=LocalDB()}}
+  else DB=LocalDB();
+  const p=document.getElementById('modepill');
+  p.textContent=MODE==='live'?'LIVE':'DEMO MODE — this device only';
+  p.style.color=MODE==='live'?'#6DF0B2':'#FFB020';
+})();
+const now=()=>Date.now()+SRV;
+const gref=p=>DB.ref(ROOT+'/'+S.pin+(p?'/'+p:''));
+
+/* ---------------- state ---------------- */
+const LS={get:(k,d)=>{try{const v=localStorage.getItem('sbrm_d_'+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+  set:(k,v)=>{try{localStorage.setItem('sbrm_d_'+k,JSON.stringify(v))}catch(e){}},
+  del:k=>{try{localStorage.removeItem('sbrm_d_'+k)}catch(e){}}};
+if(!LS.get('uid'))LS.set('uid','u'+Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4));
+const S={screen:'home',role:null,pin:null,uid:LS.get('uid'),myTeamId:null,game:null,
+  pickedRating:null,err:'',subbed:false,lastTick:-1,guard:'',sheet:false};
+(function(){const s=LS.get('session');if(s&&s.pin&&s.role){S.role=s.role;S.pin=s.pin;S.myTeamId=s.teamId||null;S.screen='live';subscribe()}})();
+function saveSession(){LS.set('session',{pin:S.pin,role:S.role,teamId:S.myTeamId})}
+function subscribe(){if(S.subbed)return;S.subbed=true;DB.ref(ROOT+'/'+S.pin).on('value',s=>{S.game=s.val();render()})}
+function leave(){try{DB.ref(ROOT+'/'+S.pin).off()}catch(e){}
+  S.subbed=false;S.game=null;S.role=null;S.pin=null;S.myTeamId=null;S.screen='home';S.err='';S.sheet=false;LS.del('session');render(true)}
+
+let AC=null;
+function beep(f,d,v){if(S.role!=='host')return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();
+  if(AC.state==='suspended')AC.resume();const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f;
+  g.gain.setValueAtTime(.0001,AC.currentTime);g.gain.exponentialRampToValueAtTime(v||.18,AC.currentTime+.01);
+  g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+(d||.09));o.connect(g);g.connect(AC.destination);
+  o.start();o.stop(AC.currentTime+(d||.09)+.02)}catch(e){}}
+
+const el=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const teamsOf=g=>Object.entries((g&&g.teams)||{}).map(([id,t])=>Object.assign({id},t)).sort((a,b)=>(+a.no)-(+b.no));
+const votesOf=g=>(g&&g.votes&&g.round?(g.votes['r'+g.round.n]||{}):{});
+const usedOf=g=>(g&&g.used)||{};
+function standings(g){const res=Object.values((g&&g.results)||{}),by={};
+  res.forEach(r=>{if(!by[r.teamId])by[r.teamId]={teamId:r.teamId,teamName:r.teamName,no:r.teamNo,sum:0,n:0,voters:0};
+    by[r.teamId].sum+=Number(r.avg)||0;by[r.teamId].n++;by[r.teamId].voters+=Number(r.count)||0});
+  return Object.values(by).map(t=>Object.assign(t,{avg:t.n?t.sum/t.n:0})).sort((a,b)=>b.avg-a.avg||b.voters-a.voters)}
+function confetti(){const c=document.createElement('div');c.className='conf';
+  const k=['#FFC531','#FF6A00','#3EC9FF','#8B5CF6','#27D17C','#FF5C8A'];
+  for(let i=0;i<90;i++){const s=document.createElement('i');s.style.left=Math.random()*100+'%';s.style.background=k[i%k.length];
+    s.style.animationDuration=(2.6+Math.random()*2.4)+'s';s.style.animationDelay=(Math.random()*1.2)+'s';c.appendChild(s)}
+  document.body.appendChild(c);setTimeout(()=>c.remove(),7000)}
+
+/* ---------------- actions ---------------- */
+const A={};
+A.go=s=>{S.err='';S.screen=s;render(true)};
+A.home=()=>leave();
+A.sheet=v=>{S.sheet=v;overlay(true)};
+A.hostLogin=()=>{const v=el('pw').value.trim();
+  if(v!==HOST_PASSWORD){S.err='Wrong password. Try again.';render(true);el('pw').focus();return}
+  const pin=String(Math.floor(100000+Math.random()*900000));
+  S.role='host';S.pin=pin;S.screen='live';S.err='';
+  DB.ref(ROOT+'/'+pin).set({createdAt:Date.now(),phase:'lobby'}).then(()=>{saveSession();subscribe();render(true)})};
+A.hostResume=()=>{const p=el('rpin').value.trim();
+  if(!/^\d{6}$/.test(p)){S.err='Enter the 6-digit PIN of the running game.';render(true);return}
+  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val()){S.err='No game found with that PIN.';render(true);return}
+    S.role='host';S.pin=p;S.screen='live';saveSession();subscribe();render(true)})};
+A.teamJoin=()=>{const p=el('tpin').value.trim(),no=el('tno').value.trim(),nm=el('tname').value.trim();
+  if(!/^\d{6}$/.test(p))return(S.err='Enter the 6-digit PIN from the big screen.',render(true));
+  if(!no)return(S.err='Enter your team number.',render(true));
+  if(!nm)return(S.err='Enter your team name.',render(true));
+  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err='No game found with that PIN.',render(true));
+    DB.ref(ROOT+'/'+p+'/teams/'+S.uid).set({no:no,name:nm,ts:Date.now()}).then(()=>{
+      S.role='team';S.pin=p;S.myTeamId=S.uid;S.screen='live';S.err='';saveSession();subscribe();render(true)})})};
+A.audJoin=()=>{const p=el('apin').value.trim(),nm=(el('aname').value||'').trim();
+  if(!/^\d{6}$/.test(p))return(S.err='Enter the 6-digit PIN from the big screen.',render(true));
+  DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err='No game found with that PIN.',render(true));
+    DB.ref(ROOT+'/'+p+'/audience/'+S.uid).set({name:nm||'Guest',ts:Date.now()}).then(()=>{
+      S.role='audience';S.pin=p;S.screen='live';S.err='';saveSession();subscribe();render(true)})})};
+A.kick=t=>{if(confirm('Remove this team?'))gref('teams/'+t).remove()};
+A.startShow=()=>gref().update({phase:'grid'});
+A.pickTeam=t=>gref().update({pendingTeam:t});
+A.pickTopic=n=>{const g=S.game;if(!g||usedOf(g)[n])return;
+  if(!g.pendingTeam){alert('First tap the team that is going to debate.');return}
+  const t=teamsOf(g).find(x=>x.id===g.pendingTeam);if(!t){alert('That team has left. Pick another.');return}
+  const rn=(g.roundCount||0)+1;
+  gref().update({phase:'topic',roundCount:rn,
+    round:{n:rn,topicId:n,teamId:t.id,teamNo:t.no,teamName:t.name,duration:(g.lastDuration||180)}})};
+A.setDuration=s=>gref().update({'round/duration':s,lastDuration:s});
+A.startDebate=()=>{const d=(S.game.round&&S.game.round.duration)||180;
+  gref().update({phase:'debate','round/startAt':now(),'round/endAt':now()+d*1000})};
+A.stopDebate=()=>gref().update({phase:'debateEnd'});
+A.startPoll=()=>gref().update({phase:'poll','round/pollStartAt':now(),'round/pollEndAt':now()+30000});
+A.closePoll=()=>{const g=S.game;if(!g||!g.round)return;
+  const v=votesOf(g),a=Object.values(v).map(Number).filter(x=>!isNaN(x));
+  const c=a.length,avg=c?a.reduce((x,y)=>x+y,0)/c:0,r=g.round,p={phase:'roundResult'};
+  p['results/r'+r.n]={n:r.n,topicId:r.topicId,teamId:r.teamId,teamNo:r.teamNo,teamName:r.teamName,avg:avg,count:c};
+  gref().update(p)};
+A.endRound=()=>{const g=S.game;if(!g||!g.round)return;
+  const p={phase:'grid',round:null,pendingTeam:null};p['used/'+g.round.topicId]=true;gref().update(p)};
+A.declare=()=>{if(!standings(S.game).length){alert('No completed rounds yet.');return}
+  gref().update({phase:'countdown',countAt:now()})};
+A.backToGrid=()=>gref().update({phase:'grid'});
+A.resetAll=()=>{if(confirm('End this game completely and clear everything?'))gref().remove().then(leave)};
+A.rate=v=>{S.pickedRating=v;render(true)};
+A.submitVote=()=>{const g=S.game;if(!g||!g.round||S.pickedRating==null)return;
+  gref('votes/r'+g.round.n+'/'+S.uid).set(S.pickedRating).then(()=>{S.pickedRating=null;render(true)})};
+
+/* ---------------- entry screens ---------------- */
+function scrHome(){return `<div class="card mid">
+  <div class="sec">Choose how you are joining</div>
+  <button class="btn" onclick="A.go('hostpw')">🎙️ &nbsp;JOIN AS A HOST</button>
+  <button class="btn blue" onclick="A.go('teamjoin')">🛡️ &nbsp;JOIN AS A TEAM</button>
+  <button class="btn violet" onclick="A.go('audjoin')">🙌 &nbsp;JOIN AS AN AUDIENCE</button>
+  <div class="note">Teams &amp; audience: take the 6-digit PIN from the big screen.</div></div>`}
+function scrHostPw(){return `<button class="back" onclick="A.go('home')">← Back</button>
+  <div class="card mid"><div class="sec">Host Access</div>
+  <div class="lbl">Password</div>
+  <input id="pw" type="password" placeholder="Host password" autocomplete="off" onkeydown="if(event.key==='Enter')A.hostLogin()">
+  <div class="err">${esc(S.err)}</div>
+  <button class="btn" onclick="A.hostLogin()">START A NEW GAME</button>
+  <div class="lbl">Or rejoin a game already running</div>
+  <input id="rpin" inputmode="numeric" maxlength="6" placeholder="6-digit PIN">
+  <button class="btn ghost sm" style="margin-top:10px" onclick="A.hostResume()">Rejoin as Host</button></div>`}
+function scrTeamJoin(){return `<button class="back" onclick="A.go('home')">← Back</button>
+  <div class="card mid"><div class="sec">Team Registration</div>
+  <div class="lbl">Game PIN</div><input id="tpin" inputmode="numeric" maxlength="6" placeholder="6-digit PIN">
+  <div class="lbl">Team Number</div><input id="tno" inputmode="numeric" maxlength="3" placeholder="e.g. 1">
+  <div class="lbl">Team Name</div><input id="tname" maxlength="28" placeholder="e.g. Vighnaharta Warriors" onkeydown="if(event.key==='Enter')A.teamJoin()">
+  <div class="err">${esc(S.err)}</div>
+  <button class="btn blue" onclick="A.teamJoin()">SUBMIT &amp; JOIN</button></div>`}
+function scrAudJoin(){return `<button class="back" onclick="A.go('home')">← Back</button>
+  <div class="card mid"><div class="sec">Audience Entry</div>
+  <div class="lbl">Game PIN</div><input id="apin" inputmode="numeric" maxlength="6" placeholder="6-digit PIN">
+  <div class="lbl">Your Name <span style="opacity:.6">(optional)</span></div>
+  <input id="aname" maxlength="24" placeholder="Your name" onkeydown="if(event.key==='Enter')A.audJoin()">
+  <div class="err">${esc(S.err)}</div>
+  <button class="btn violet" onclick="A.audJoin()">ENTER AS AUDIENCE</button>
+  <div class="note">You will rate each debate from 1 to 10.</div></div>`}
+
+/* ---------------- shared blocks ---------------- */
+function topicHead(g,withTeam,small){const r=g.round,t=TOPIC[r.topicId]||{n:r.topicId,t:'',cat:''};
+  return `<div class="rd">Round ${r.n} &nbsp;•&nbsp; ${esc(t.cat)}</div>
+    ${small?'':`<div class="tno">TOPIC ${t.n}</div>`}
+    <div class="ttxt"${small?' style="font-size:min(5.6vw,4.6vh)"':''}>${small?'<b style="color:#FFD98A">'+t.n+'.</b> ':''}${esc(t.t)}</div>
+    ${withTeam?`<div class="teamchip">🛡️ Team ${esc(r.teamNo)} — ${esc(r.teamName)}</div>`:''}`}
+function board(g,live){const u=usedOf(g);let h='<div class="board">';
+  CATS.forEach(c=>c.items.forEach(([n])=>{const d=!!u[n];
+    h+=`<button class="tbox ${c.cls}${d?' used':''}" ${d||!live?'disabled':''} ${live&&!d?`onclick="A.pickTopic(${n})"`:''}>
+      <span class="n">${n}</span><span class="w">${d?'DONE':c.short}</span></button>`}));
+  return h+'</div>'}
+function stdTable(g){const s=standings(g);
+  if(!s.length)return '<div class="note">No rounds completed yet.</div>';
+  return `<table class="std"><tr><th>#</th><th>Team</th><th>Avg</th></tr>`+s.map((t,i)=>
+    `<tr><td>${i+1}</td><td>Team ${esc(t.no||'')} — ${esc(t.teamName)}<small>${t.n} round${t.n>1?'s':''} • ${t.voters} votes</small></td>
+     <td>${t.avg.toFixed(2)}</td></tr>`).join('')+'</table>'}
+
+/* ---------------- HOST ---------------- */
+function hostView(g){
+  const ph=g.phase,ts=teamsOf(g);
+  if(ph==='lobby')return `<div class="card">
+    <div class="grow">
+      <div class="klabel">Game PIN</div>
+      <div class="pincode">${esc(S.pin)}</div>
+      <div class="lb">teams &amp; audience enter this pin to join</div>
+    </div>
+    <div class="chips ${ts.length>12?'s2':ts.length>6?'s1':''}" style="margin:1.2vh 0">${ts.length?ts.map(t=>`<span class="chip"><b class="no">${esc(t.no)}</b>${esc(t.name)}
+      <i class="x" onclick="A.kick('${t.id}')">×</i></span>`).join(''):'<div class="dots">Waiting for teams<span>.</span><span>.</span><span>.</span></div>'}</div>
+    <div class="bar"><button class="btn green w2" ${ts.length?'':'disabled'} onclick="A.startShow()">▶ START THE SHOW</button>
+      <button class="btn ghost sm" onclick="A.resetAll()">End game</button></div></div>`;
+  if(ph==='grid')return `<div class="card">
+    <div class="sec">Step 1 — tap the team &nbsp;›&nbsp; Step 2 — tap the topic</div>
+    <div class="chips ${ts.length>12?'s2':ts.length>6?'s1':''}" style="max-height:22vh;margin-bottom:1.2vh">${ts.length?ts.map(t=>
+      `<span class="chip pick ${g.pendingTeam===t.id?'sel':''}" onclick="A.pickTeam('${t.id}')"><b class="no">${esc(t.no)}</b>${esc(t.name)}</span>`).join('')
+      :'<div class="note">All teams left. Ask them to rejoin with the PIN.</div>'}</div>
+    ${board(g,true)}
+    <div class="bar"><button class="btn w2" onclick="A.declare()">🏆 DECLARE THE WINNER</button>
+      <button class="btn ghost sm" onclick="A.sheet(true)">Standings</button>
+      <button class="btn ghost sm" onclick="A.resetAll()">End game</button></div></div>`;
+  if(ph==='topic'){const d=(g.round&&g.round.duration)||180;
+    return `<div class="card"><div class="grow">${topicHead(g,true)}</div>
+    <div class="sec" style="margin:1vh 0 .6vh">Debate time</div>
+    <div class="bar">${[60,120,180,300].map(s=>`<button class="btn sm ${d===s?'green':'ghost'}" onclick="A.setDuration(${s})">${s/60} min</button>`).join('')}</div>
+    <div class="bar"><button class="btn green w2" onclick="A.startDebate()">🔔 START THE DEBATE</button>
+      <button class="btn red sm" onclick="A.endRound()">End round</button></div></div>`}
+  if(ph==='debate')return `<div class="card">
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
+    <div class="bigtimer" id="bigTimer">--<span class="u">seconds remaining</span></div></div>
+    <div class="timerbar"><i id="timerBar" style="width:100%"></i></div>
+    <div class="bar"><button class="btn w2" onclick="A.stopDebate()">⏹ STOP &amp; GO TO POLL</button>
+      <button class="btn red sm" onclick="A.endRound()">End round</button></div></div>`;
+  if(ph==='debateEnd')return `<div class="card">
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
+    <div><div class="dots">Debate over</div><div class="note">Audience phones are ready.</div></div></div>
+    <div class="bar"><button class="btn green w2" onclick="A.startPoll()">🗳️ AUDIENCE POLL BEGINS</button>
+      <button class="btn red sm" onclick="A.endRound()">End round</button></div></div>`;
+  if(ph==='poll')return `<div class="card">
+    <div class="sec">Audience is rating Team ${esc(g.round.teamNo)} — ${esc(g.round.teamName)}</div>
+    <div class="grow"><div class="polltimer" id="pollTimer">30</div><div class="lb">seconds left to vote</div>
+      <div class="bignum" id="voteCount">0</div><div class="lb">votes received</div></div>
+    <div class="bar"><button class="btn ghost sm" onclick="A.closePoll()">Close the poll now</button></div></div>`;
+  if(ph==='roundResult'){const r=(g.results||{})['r'+g.round.n]||{avg:0,count:0};
+    return `<div class="card"><div class="sec">Round ${g.round.n} result</div>
+    <div class="grow"><div class="ttxt" style="font-size:min(6vw,5vh)">Team ${esc(g.round.teamNo)} — ${esc(g.round.teamName)}</div>
+      <div class="bignum" style="font-size:min(24vw,22vh)">${Number(r.avg).toFixed(2)}</div>
+      <div class="lb">average rating out of 10 &nbsp;•&nbsp; ${r.count} votes</div></div>
+    <div class="bar"><button class="btn red" onclick="A.endRound()">✔ END THE ROUND</button></div></div>`}
+  return `<div class="card"><div class="grow"><div class="dots">…</div></div></div>`}
+
+/* ---------------- TEAM ---------------- */
+function teamView(g){
+  const ph=g.phase,me=(g.teams||{})[S.myTeamId];
+  if(!me)return `<div class="card"><div class="grow"><div class="dots">You are out of the game</div>
+    <div class="note">The host removed your team, or the game was reset.</div></div>
+    <div class="bar"><button class="btn ghost" onclick="A.home()">Back to start</button></div></div>`;
+  const mine=g.round&&g.round.teamId===S.myTeamId;
+  if(ph==='lobby')return `<div class="card"><div class="grow">
+    <div class="klabel">You are in</div><div class="pincode" style="font-size:min(16vw,14vh)">TEAM ${esc(me.no)}</div>
+    <div class="ttxt" style="font-size:min(6vw,5vh)">${esc(me.name)}</div>
+    <div class="dots" style="margin-top:2vh;font-size:min(4.6vw,3.4vh)">Waiting for the host<span>.</span><span>.</span><span>.</span></div></div></div>`;
+  if(ph==='grid')return `<div class="card"><div class="sec">Team ${esc(me.no)} — ${esc(me.name)} &nbsp;•&nbsp; topics left</div>
+    ${board(g,false)}</div>`;
+  if(ph==='topic')return `<div class="card"><div class="grow">${topicHead(g,true)}
+    <div class="dots" style="margin-top:2vh;font-size:min(5vw,3.6vh)">${mine?'Get ready — you are up!':'Listen in'}</div></div></div>`;
+  if(ph==='debate')return `<div class="card">
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
+    <div class="bigtimer" id="bigTimer">--<span class="u">seconds remaining</span></div></div>
+    <div class="timerbar"><i id="timerBar" style="width:100%"></i></div></div>`;
+  if(ph==='debateEnd')return `<div class="card">
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
+    <div><div class="dots">Time up!</div><div class="note">Audience poll about to begin.</div></div></div></div>`;
+  if(ph==='poll')return `<div class="card"><div class="sec">Audience is voting</div>
+    <div class="grow"><div class="polltimer" id="pollTimer">30</div><div class="lb">seconds left</div>
+    <div class="bignum" id="voteCount">0</div><div class="lb">votes received</div></div></div>`;
+  if(ph==='roundResult'){const r=(g.results||{})['r'+g.round.n]||{avg:0,count:0};
+    return `<div class="card"><div class="sec">Round ${g.round.n} result</div><div class="grow">
+      <div class="ttxt" style="font-size:min(6vw,5vh)">Team ${esc(g.round.teamNo)} — ${esc(g.round.teamName)}</div>
+      <div class="bignum" style="font-size:min(24vw,22vh)">${Number(r.avg).toFixed(2)}</div>
+      <div class="lb">average rating • ${r.count} votes</div></div></div>`}
+  return `<div class="card"><div class="grow"><div class="dots">…</div></div></div>`}
+
+/* ---------------- AUDIENCE ---------------- */
+function audView(g){
+  const ph=g.phase;
+  if(ph==='topic')return `<div class="card"><div class="grow">${topicHead(g,true)}
+    <div class="note">You will rate this team out of 10.</div></div></div>`;
+  if(ph==='debate')return `<div class="card">
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
+    <div class="bigtimer" id="bigTimer">--<span class="u">seconds remaining</span></div></div>
+    <div class="timerbar"><i id="timerBar" style="width:100%"></i></div></div>`;
+  if(ph==='debateEnd')return `<div class="card">
+    <div class="grow" style="justify-content:space-evenly"><div>${topicHead(g,true,true)}</div>
+    <div class="dots">Get ready to vote</div></div></div>`;
+  if(ph==='poll'){const v=votesOf(g),done=v[S.uid]!==undefined;
+    if(done)return `<div class="card"><div class="grow"><div class="dots" style="color:#6DF0B2">Vote recorded ✓</div>
+      <div class="bignum">${v[S.uid]}</div><div class="lb">your rating for ${esc(g.round.teamName)}</div>
+      <div class="note">Thank you! Sit back for the result.</div></div></div>`;
+    const k=['#FF3B4E','#FF5B3B','#FF7A2E','#FF9A1F','#FFB020','#FFC531','#D8D63A','#A9DA4A','#6DD86A','#27D17C'];
+    return `<div class="card"><div class="sec">Rate Team ${esc(g.round.teamNo)} — ${esc(g.round.teamName)}</div>
+      <div style="text-align:center"><span class="polltimer" id="pollTimer" style="font-size:min(13vw,8vh)">30</span>
+      <span class="lb" style="display:inline;margin-left:8px">sec left</span></div>
+      <div class="scalewrap"><div class="scale">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="sc ${S.pickedRating===n?'on':''}"
+        style="background:linear-gradient(180deg,${k[n-1]}CC,${k[n-1]})" onclick="A.rate(${n})">${n}</button>`).join('')}</div></div>
+      <div class="legend"><span>1 = Poor</span><span>10 = Outstanding</span></div>
+      <div class="bar"><button class="btn green" ${S.pickedRating==null?'disabled':''} onclick="A.submitVote()">
+        ${S.pickedRating==null?'SELECT A RATING FIRST':'SUBMIT MY RATING ('+S.pickedRating+')'}</button></div></div>`}
+  if(ph==='roundResult'){const r=(g.results||{})['r'+g.round.n]||{avg:0,count:0};
+    return `<div class="card"><div class="sec">Round ${g.round.n} result</div><div class="grow">
+      <div class="ttxt" style="font-size:min(6vw,5vh)">Team ${esc(g.round.teamNo)} — ${esc(g.round.teamName)}</div>
+      <div class="bignum" style="font-size:min(24vw,22vh)">${Number(r.avg).toFixed(2)}</div>
+      <div class="lb">average rating • ${r.count} votes</div></div></div>`}
+  return `<div class="card"><div class="grow"><div class="dots">Waiting for the next debate<span>.</span><span>.</span><span>.</span></div>
+    <div class="note">Keep this page open — your rating screen appears on its own.</div></div></div>`}
+
+/* ---------------- render ---------------- */
+let lastKey='',winShown=false,lastN=-1;
+function viewKey(){const g=S.game;
+  if(S.screen!=='live')return S.screen+'|'+S.err;
+  if(!g)return 'none';
+  const t=Object.entries(g.teams||{}).map(([k,v])=>k+v.no+v.name).join(',');
+  const mv=g.round?((g.votes||{})['r'+g.round.n]||{})[S.uid]:'';
+  return [S.role,g.phase,g.round?g.round.n+'-'+g.round.topicId+'-'+g.round.teamId+'-'+g.round.duration:'x',
+    t,Object.keys(g.used||{}).join(''),g.pendingTeam||'',mv,S.pickedRating,Object.keys(g.results||{}).length].join('|')}
+function render(force){
+  const k=viewKey(); if(!force&&k===lastKey){overlay();return} lastKey=k;
+  const app=el('app'),g=S.game;
+  if(S.screen==='home')app.innerHTML=scrHome();
+  else if(S.screen==='hostpw')app.innerHTML=scrHostPw();
+  else if(S.screen==='teamjoin')app.innerHTML=scrTeamJoin();
+  else if(S.screen==='audjoin')app.innerHTML=scrAudJoin();
+  else if(!g)app.innerHTML=`<div class="card mid"><div class="grow"><div class="dots">Game closed</div>
+    <div class="note">The host ended this game.</div></div>
+    <div class="bar"><button class="btn ghost" onclick="A.home()">Back to start</button></div></div>`;
+  else app.innerHTML = S.role==='host'?hostView(g) : S.role==='team'?teamView(g) : audView(g);
+  overlay(); tick();
+}
+function overlay(force){
+  const g=S.game,o=el('overlay');
+  if(S.sheet){o.innerHTML=`<div class="ov sheet"><div class="sec">Standings</div>${stdTable(g)}
+    <button class="btn ghost sm" style="max-width:240px;margin-top:2vh" onclick="A.sheet(false)">Close</button></div>`;return}
+  if(!g||g.phase!=='countdown'){if(o.innerHTML){o.innerHTML='';winShown=false;lastN=-1}return}
+  const e=(now()-(g.countAt||now()))/1000;
+  if(e<5){const n=Math.max(1,5-Math.floor(e));
+    if(n!==lastN){lastN=n;beep(560+(5-n)*90,.12,.22);o.innerHTML=`<div class="ov count"><div class="n">${n}</div></div>`}return}
+  if(!winShown){winShown=true;const s=standings(g),w=s[0];
+    o.innerHTML=`<div class="ov win"><div class="k">The audience has decided</div>
+      <div class="nm">${esc(w?('Team '+(w.no||'')+' — '+w.teamName):'—')}</div>
+      <div class="s2">${w?w.avg.toFixed(2):'0'} / 10</div>
+      <div style="width:100%;max-width:720px;margin-top:2vh">${stdTable(g)}</div>
+      ${S.role==='host'?'<button class="btn ghost sm" style="max-width:240px;margin-top:2vh" onclick="A.backToGrid()">Back to topics</button>':''}</div>`;
+    confetti();beep(660,.18,.2);setTimeout(()=>beep(880,.25,.2),180)}
+}
+setInterval(tick,100);
+function tick(){const g=S.game;if(!g)return;
+  if(g.phase==='countdown'){overlay();return}
+  if(g.phase==='debate'&&g.round&&g.round.endAt){
+    const left=Math.max(0,(g.round.endAt-now())/1000),t=el('bigTimer'),b=el('timerBar'),s=Math.ceil(left);
+    if(t){t.innerHTML=s+'<span class="u">seconds remaining</span>';t.classList.toggle('warn',left<=10&&left>0);
+      if(s!==S.lastTick&&s<=10&&s>0){S.lastTick=s;beep(900,.09,.25)}}
+    if(b)b.style.width=(100*left/((g.round.duration)||180))+'%';
+    if(left<=0&&S.role==='host'&&S.guard!=='de'+g.round.n){S.guard='de'+g.round.n;gref().update({phase:'debateEnd'});beep(400,.4,.25)}}
+  if(g.phase==='poll'&&g.round&&g.round.pollEndAt){
+    const left=Math.max(0,(g.round.pollEndAt-now())/1000),p=el('pollTimer'),s=Math.ceil(left);
+    if(p){p.textContent=s;p.classList.toggle('warn',left<=10&&left>0)}
+    if(s!==S.lastTick){S.lastTick=s;if(s>0)beep(s<=5?1000:640,s<=5?.12:.07,s<=5?.3:.16)}
+    const v=el('voteCount');if(v)v.textContent=Object.keys(votesOf(g)).length;
+    if(left<=0&&S.role==='host'&&S.guard!=='cp'+g.round.n){S.guard='cp'+g.round.n;A.closePoll()}}
+}
+document.addEventListener('click',()=>{if(!AC&&S.role==='host'){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}},{once:true});
+window.addEventListener('resize',()=>render(true));
+render(true);
+</script>
+</body>
+</html>
