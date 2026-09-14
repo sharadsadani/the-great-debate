@@ -79,6 +79,9 @@ input::placeholder{color:#7E8AB5;font-weight:600}
 input:focus{border-color:var(--gold);background:rgba(255,255,255,.10)}
 .lbl{display:block;font-size:min(2.6vw,1.4vh);letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
   margin:clamp(8px,1.6vh,14px) 0 6px;font-weight:800}
+.warnbox{max-width:760px;margin:1.4vh auto 0;padding:clamp(8px,1.4vh,14px) 16px;border-radius:12px;
+  background:rgba(255,59,78,.14);border:1px solid rgba(255,59,78,.5);color:#FFC2C9;font-weight:700;
+  font-size:min(2.7vw,1.7vh);line-height:1.5}
 .err{color:#FF9AA6;font-weight:800;text-align:center;margin-top:8px;min-height:1.4em;font-size:min(3vw,1.7vh)}
 .note{color:var(--muted);font-size:min(2.8vw,1.6vh);text-align:center;margin-top:10px;line-height:1.5}
 .back{position:absolute;left:10px;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:9;background:rgba(0,0,0,.45);
@@ -228,13 +231,14 @@ table.std td small{display:block;font-weight:600;font-size:.62em;color:#9AA6D0;f
    Leave it as-is and the app still runs in DEMO MODE on one device.
    ===================================================================== */
 var FIREBASE_CONFIG = {
-  apiKey: "AIzaSyCdpcbwv7asKSZcdE154Ik6Bwlp8KIofJ4",
-  authDomain: "aapna-kahoot.firebaseapp.com",
-  databaseURL: "https://aapna-kahoot-default-rtdb.firebaseio.com",
-  projectId: "aapna-kahoot",
-  storageBucket: "aapna-kahoot.firebasestorage.app",
-  messagingSenderId: "677225599615",
-  appId: "1:677225599615:web:050395306e0c5000b5a54a",};
+  apiKey: "PASTE_YOUR_API_KEY",
+  authDomain: "PASTE.firebaseapp.com",
+  databaseURL: "https://PASTE-default-rtdb.firebaseio.com",
+  projectId: "PASTE",
+  storageBucket: "PASTE.appspot.com",
+  messagingSenderId: "PASTE",
+  appId: "PASTE"
+};
 </script>
 <script>
 const CATS=[
@@ -305,10 +309,18 @@ const LS={get:(k,d)=>{try{const v=localStorage.getItem('sbrm_d_'+k);return v===n
   del:k=>{try{localStorage.removeItem('sbrm_d_'+k)}catch(e){}}};
 if(!LS.get('uid'))LS.set('uid','u'+Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4));
 const S={screen:'home',role:null,pin:null,uid:LS.get('uid'),myTeamId:null,game:null,
-  pickedRating:null,err:'',subbed:false,lastTick:-1,guard:'',sheet:false};
-(function(){const s=LS.get('session');if(s&&s.pin&&s.role){S.role=s.role;S.pin=s.pin;S.myTeamId=s.teamId||null;S.screen='live';subscribe()}})();
+  pickedRating:null,err:'',subbed:false,lastTick:-1,guard:'',sheet:false,hadGame:false,dbwarn:''};
+(function(){const s=LS.get('session');if(s&&s.pin&&s.role){S.role=s.role;S.pin=s.pin;S.myTeamId=s.teamId||null;S.screen='live';S.hadGame=true;subscribe()}})();
 function saveSession(){LS.set('session',{pin:S.pin,role:S.role,teamId:S.myTeamId})}
-function subscribe(){if(S.subbed)return;S.subbed=true;DB.ref(ROOT+'/'+S.pin).on('value',s=>{S.game=s.val();render()})}
+function subscribe(){if(S.subbed)return;S.subbed=true;
+  DB.ref(ROOT+'/'+S.pin).on('value',s=>{const v=s.val();
+    if(v){S.hadGame=true;S.dbwarn='';S.game=v}
+    else if(S.hadGame){S.game=null}
+    render()},
+  e=>{S.dbwarn=dbMsg(e);render(true)})}
+function dbMsg(e){const m=(e&&(e.message||e.code))||String(e);
+  if(/permission|denied/i.test(m))return 'Firebase refused access — open the Realtime Database → Rules tab and publish: { "rules": { ".read": true, ".write": true } }';
+  return 'Cannot reach the database: '+m+' — check the databaseURL line in the config block.'}
 function leave(){try{DB.ref(ROOT+'/'+S.pin).off()}catch(e){}
   S.subbed=false;S.game=null;S.role=null;S.pin=null;S.myTeamId=null;S.screen='home';S.err='';S.sheet=false;LS.del('session');render(true)}
 
@@ -342,24 +354,32 @@ A.sheet=v=>{S.sheet=v;overlay(true)};
 A.hostLogin=()=>{const v=el('pw').value.trim();
   if(v!==HOST_PASSWORD){S.err='Wrong password. Try again.';render(true);el('pw').focus();return}
   const pin=String(Math.floor(100000+Math.random()*900000));
-  S.role='host';S.pin=pin;S.screen='live';S.err='';
-  DB.ref(ROOT+'/'+pin).set({createdAt:Date.now(),phase:'lobby'}).then(()=>{saveSession();subscribe();render(true)})};
+  S.role='host';S.pin=pin;S.screen='live';S.err='';S.hadGame=false;S.dbwarn='';
+  S.game={createdAt:Date.now(),phase:'lobby'};
+  saveSession();render(true);
+  const t=setTimeout(()=>{if(!S.hadGame){S.dbwarn='No answer from Firebase after 8 seconds — check the databaseURL in the config block and the Realtime Database rules.';render(true)}},8000);
+  DB.ref(ROOT+'/'+pin).set({createdAt:Date.now(),phase:'lobby'})
+    .then(()=>{clearTimeout(t);S.dbwarn='';subscribe();render(true)})
+    .catch(e=>{clearTimeout(t);S.dbwarn=dbMsg(e);render(true)})};
 A.hostResume=()=>{const p=el('rpin').value.trim();
   if(!/^\d{6}$/.test(p)){S.err='Enter the 6-digit PIN of the running game.';render(true);return}
   DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val()){S.err='No game found with that PIN.';render(true);return}
-    S.role='host';S.pin=p;S.screen='live';saveSession();subscribe();render(true)})};
+    S.role='host';S.pin=p;S.screen='live';S.hadGame=true;saveSession();subscribe();render(true)})
+    .catch(e=>{S.err=dbMsg(e);render(true)})};
 A.teamJoin=()=>{const p=el('tpin').value.trim(),no=el('tno').value.trim(),nm=el('tname').value.trim();
   if(!/^\d{6}$/.test(p))return(S.err='Enter the 6-digit PIN from the big screen.',render(true));
   if(!no)return(S.err='Enter your team number.',render(true));
   if(!nm)return(S.err='Enter your team name.',render(true));
   DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err='No game found with that PIN.',render(true));
     DB.ref(ROOT+'/'+p+'/teams/'+S.uid).set({no:no,name:nm,ts:Date.now()}).then(()=>{
-      S.role='team';S.pin=p;S.myTeamId=S.uid;S.screen='live';S.err='';saveSession();subscribe();render(true)})})};
+      S.role='team';S.pin=p;S.myTeamId=S.uid;S.screen='live';S.err='';S.hadGame=true;saveSession();subscribe();render(true)})
+      .catch(e=>{S.err=dbMsg(e);render(true)})}).catch(e=>{S.err=dbMsg(e);render(true)})};
 A.audJoin=()=>{const p=el('apin').value.trim(),nm=(el('aname').value||'').trim();
   if(!/^\d{6}$/.test(p))return(S.err='Enter the 6-digit PIN from the big screen.',render(true));
   DB.ref(ROOT+'/'+p).once('value').then(s=>{if(!s.val())return(S.err='No game found with that PIN.',render(true));
     DB.ref(ROOT+'/'+p+'/audience/'+S.uid).set({name:nm||'Guest',ts:Date.now()}).then(()=>{
-      S.role='audience';S.pin=p;S.screen='live';S.err='';saveSession();subscribe();render(true)})})};
+      S.role='audience';S.pin=p;S.screen='live';S.err='';S.hadGame=true;saveSession();subscribe();render(true)})
+      .catch(e=>{S.err=dbMsg(e);render(true)})}).catch(e=>{S.err=dbMsg(e);render(true)})};
 A.kick=t=>{if(confirm('Remove this team?'))gref('teams/'+t).remove()};
 A.startShow=()=>gref().update({phase:'grid'});
 A.pickTeam=t=>gref().update({pendingTeam:t});
@@ -446,6 +466,7 @@ function hostView(g){
       <div class="klabel">Game PIN</div>
       <div class="pincode">${esc(S.pin)}</div>
       <div class="lb">teams &amp; audience enter this pin to join</div>
+      ${S.dbwarn?`<div class="warnbox">⚠ ${esc(S.dbwarn)}</div>`:''}
     </div>
     <div class="chips ${ts.length>12?'s2':ts.length>6?'s1':''}" style="margin:1.2vh 0">${ts.length?ts.map(t=>`<span class="chip"><b class="no">${esc(t.no)}</b>${esc(t.name)}
       <i class="x" onclick="A.kick('${t.id}')">×</i></span>`).join(''):'<div class="dots">Waiting for teams<span>.</span><span>.</span><span>.</span></div>'}</div>
@@ -571,6 +592,7 @@ function render(force){
   else if(S.screen==='hostpw')app.innerHTML=scrHostPw();
   else if(S.screen==='teamjoin')app.innerHTML=scrTeamJoin();
   else if(S.screen==='audjoin')app.innerHTML=scrAudJoin();
+  else if(!g&&S.role==='host'&&!S.hadGame)app.innerHTML=hostView({phase:'lobby'});
   else if(!g)app.innerHTML=`<div class="card mid"><div class="grow"><div class="dots">Game closed</div>
     <div class="note">The host ended this game.</div></div>
     <div class="bar"><button class="btn ghost" onclick="A.home()">Back to start</button></div></div>`;
